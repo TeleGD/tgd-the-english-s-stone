@@ -16,6 +16,7 @@ public class Duel extends BasicGameState {
 	private int ID;
 	private List<Integer> failures;
 	private List<Integer> durations;
+	private List<Spell> spells;
 
 	public Duel(int ID) {
 		this.ID = ID;
@@ -49,5 +50,14 @@ public class Duel extends BasicGameState {
 	}
 
 	public void keyPressed(int key, char character) {}
+	
+	public void characterDied(boolean side) {
+		//TODO : indiquer la fin du duel
+	}
+	
+	public void launchSpell(int x, int y, boolean side, int star, int damage) {
+		Spell spell = new Spell(x, y, side, star, damage);
+		spells.add(spell);
+	}
 
 }
