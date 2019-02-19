@@ -1,6 +1,8 @@
 package pages;
 
 import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
@@ -9,6 +11,11 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import app.AppMenu;
 import app.elements.MenuItem;
+
+import english.Chapter;
+import english.Duel;
+import english.Exercise;
+import english.Subject;
 
 public class Choice extends AppMenu {
 
@@ -23,6 +30,15 @@ public class Choice extends AppMenu {
 		this.setMenu(Arrays.asList(new MenuItem[] {
 			new MenuItem("English project") {
 				public void itemSelected() {
+					Exercise exercise = new Exercise();
+					List<Exercise> exercises = new ArrayList<Exercise>();
+					exercises.add(exercise);
+					Chapter chapter = new Chapter("Irregular verbs", "", null, exercises);
+					List<Chapter> chapters = new ArrayList<Chapter>();
+					chapters.add(chapter);
+					Subject subject = new Subject("Conjugaison", "", chapters);
+					Duel duel = (Duel) game.getState(2);
+					duel.start(subject, 0);
 					game.enterState(2, new FadeOutTransition(), new FadeInTransition());
 				}
 			},

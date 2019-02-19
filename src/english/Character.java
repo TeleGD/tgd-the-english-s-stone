@@ -20,4 +20,6 @@ public class Character extends Entity {
 
 	public void render(GameContainer container, StateBasedGame game, Graphics context) {}
 
+	public void keyPressed(int key, char value) {}
+
 }

@@ -2,9 +2,8 @@ package english;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.state.StateBasedGame;
-
-import app.ui.AppPicture;
 
 public class Entity {
 
@@ -12,7 +11,7 @@ public class Entity {
 	private int y;
 	private int dx;
 	private int dy;
-	private AppPicture sprite;
+	private Image sprite;
 
 	public void update(GameContainer container, StateBasedGame game, int delta) {}
 

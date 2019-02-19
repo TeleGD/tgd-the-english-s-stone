@@ -2,7 +2,7 @@ package english;
 
 import org.newdawn.slick.GameContainer; import org.newdawn.slick.state.StateBasedGame;
 
-public class AI {
+public class AI extends Character {
 
 	private Statistics statistics;
 
