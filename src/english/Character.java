@@ -24,6 +24,8 @@ public abstract class Character extends Entity {
 		this.HPmax = HPmax;
 		this.duel = duel;
 		this.side = side;
+		this.starMax = 3;
+		this.starCount = starMax;	//TODO : retirer cette ligne lorsque le Character aura eu un Exercise d'attribué
 		
 		if(!side) {	//TODO : changer les positions des joueurs
 			this.setX(10);

@@ -9,7 +9,7 @@ public class Spell extends Entity {
 	private int damage;
 
 	public Spell(int x, int y, boolean side, int star, int damage) {
-		super("/images/spell/Arcane_Effect_4.png",30,30, x, y, (side? -1 : 1)* 10 );
+		super("/images/spell/Arcane_Effect_4.png",100,100, x, y, (side? -1 : 1)* 5 );
 		this.star = star;
 		this.damage = damage;
 	}
@@ -17,6 +17,23 @@ public class Spell extends Entity {
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 		super.update(container, game, delta);
 		//TODO : check de colision avec un Character ou un autre Spell
+	}
+	
+	public int getDamageToDo() {
+		return (int) (damage * star) /3;
+	}
+	
+	public int collideWithOtherSpell(Spell spell) {
+		// Retourne le nombre de star restant après différence avec le nombre de star de spell
+		star -= spell.getStar();
+		if (star <= 0) {
+			star = 0;
+		}
+		return star;
+	}
+	
+	public int getStar() {
+		return star;
 	}
 
 }

@@ -83,5 +83,17 @@ public class Entity {
 	public void setY(int y) {
 		this.y = y;
 	}
+	
+	public int getSpriteWidth() {
+		return spriteWidth;
+	}
+
+	public int getSpriteHeight() {
+		return spriteHeight;
+	}
+	
+	public boolean getSide() {
+		return side;
+	}
 
 }

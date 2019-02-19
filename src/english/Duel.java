@@ -69,9 +69,49 @@ public class Duel extends BasicGameState {
 
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 		/* Méthode exécutée environ 60 fois par seconde */
+		
+		// Updates des Entity :
 		for (Character character: this.characters) {
 			character.update(container, game, delta);
 		}
+		for (Spell spell : this.spells) {
+			spell.update(container, game, delta);
+		}
+		
+		//Collisions : 
+		if (spells.size()==2) {	// Collision entre Spell
+			Spell spell0 = spells.get(0);
+			Spell spell1 = spells.get(1);
+			if (spell0.getX() + spell0.getSpriteWidth() > spell1.getX()) {	// S'il y a collision entre Spell
+				//Collision entre Spell
+				spell0.collideWithOtherSpell(spell1);
+				spell1.collideWithOtherSpell(spell0);
+				// Destruction des Spell tombés à zéro star
+				if (spell0.getStar() <=0) {
+					spells.remove(spell0);
+				}
+				if (spell1.getStar() <=0) {
+					spells.remove(spell1);
+				}
+			}
+		}
+		for (int i = 0; i < spells.size() ; i++) {	// Collision entre Spell et Character
+			Spell spell = spells.get(i);
+			if (spell.getSide()) {	// Si le Spell va vers la droite
+				if (spell.getX() + spell.getSpriteWidth() >= characters[1].getX()) {	// Si le Spell est plus à droite que le Character
+					spellTouchCharacter(1, spell);
+				}
+			} else {	// Si le Spell va vers la gauche
+				if (characters[1].getX() + characters[1].getSpriteWidth() >= spell.getX()) {	// Si le Spell est plus à gauche que le Character
+					spellTouchCharacter(0, spell);
+				}
+			}	
+		}
+	}
+	
+	public void spellTouchCharacter(int i, Spell spell) {
+		characters[i].takeDamage(spell.getDamageToDo());	// Inflige les dégâts au Character
+		spells.remove(spell);	//Retire le Spell
 	}
 
 	public void render(GameContainer container, StateBasedGame game, Graphics context) {
@@ -85,6 +125,10 @@ public class Duel extends BasicGameState {
 		for (Character character: this.characters) {
 			character.render(container, game, context);
 		}
+		
+		for (Spell spell : spells) {
+			spell.render(container, game, context);
+		}
 	}
 
 	public void keyPressed(int key, char value) {
@@ -94,14 +138,20 @@ public class Duel extends BasicGameState {
 	}
 
 	public void start(Subject subject, int index) {
-		this.subject = subject;
-		this.chapter = subject.getChapter(index);
+		// Partie Character et Spell :
 		int side = Duel.RNG.nextInt(2);
 		boolean sideBoolean = side==1? true : false;
 		this.characters[side] = new Player("JOUEUR",1000,this, sideBoolean);
 		this.characters[1 - side] = new AI("Deep Neural Network", 1000,this, !sideBoolean);
+		this.spells = new ArrayList<>(2);
+		
+		//Partie statistiques :
 		this.failures.clear();
 		this.durations.clear();
+		
+		// Partie affichage chapitre et sujet :
+		this.subject = subject;
+		this.chapter = subject.getChapter(index);
 		this.title = "Subject: " + this.subject.getName();
 		this.subTitle = "Chapter: " + this.chapter.getName();
 		this.titleFont = Duel.font;
@@ -122,7 +172,11 @@ public class Duel extends BasicGameState {
 
 	public void launchSpell(int x, int y, boolean side, int star, int damage) {
 		Spell spell = new Spell(x, y, side, star, damage);
-		spells.add(spell);
+		int index = 0;		// Index par défaut (s'il n'y a pas encore de Spell dans spells)
+		if (spells.size() > 0) {	// Il y a déjà un Spell
+			index = side? 1 : 0;	// Alors on calcul l'index où mettre le Spell en fonction de son side
+		}
+		spells.add(index, spell);
 	}
 
 }
