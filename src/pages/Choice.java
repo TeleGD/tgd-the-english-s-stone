@@ -16,7 +16,6 @@ public class Choice extends AppMenu {
 		super(ID);
 	}
 
-	@Override
 	public void init(GameContainer container, StateBasedGame game) {
 		super.initSize(container, game, 600, 400);
 		super.init(container, game);
