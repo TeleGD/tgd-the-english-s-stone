@@ -19,6 +19,7 @@ public class Entity {
 	private int spriteHeight;
 	private int spriteNaturalWidth;
 	private int spriteNaturalHeight;
+	protected boolean side; // true : Character à droite, false : Character à gauche
 	
 	public Entity(String spritePath, int x, int y, int dx) {
 		this.setSprite(AppLoader.loadPicture(spritePath));
@@ -26,6 +27,7 @@ public class Entity {
 		this.x = x;
 		this.y = y;
 		this.dx = dx;
+		this.side = (dx>=0);
 	}
 
 	public void update(GameContainer container, StateBasedGame game, int delta) {
@@ -39,7 +41,7 @@ public class Entity {
 	
 	public void renderSprite(GameContainer container, StateBasedGame game, Graphics context) {
 		context.drawImage(
-				this.sprite,
+				this.sprite.getFlippedCopy(side, false),
 				this.x,
 				this.y,
 				this.x + this.spriteWidth,
@@ -71,6 +73,14 @@ public class Entity {
 
 	public int getDx() {
 		return dx;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public void setY(int y) {
+		this.y = y;
 	}
 
 }

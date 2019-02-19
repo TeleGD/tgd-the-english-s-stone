@@ -17,14 +17,21 @@ public abstract class Character extends Entity {
 	private TextField textField; //TODO : implémenter un TextField basique
 	private Duel duel;
 	private Exercise exercise;
-	private boolean side;  // true : Character à droite, false : Character à gauche
 
-	public Character(String spritePath, int x, int y, int dx, String name, int HPmax, Duel duel, boolean side) {
-		super(spritePath, x, y, dx);
+	public Character(String spritePath, String name, int HPmax, Duel duel, boolean side) {
+		super(spritePath, 0, 0, 0);
 		this.name = name;
 		this.HPmax = HPmax;
 		this.duel = duel;
 		this.side = side;
+		
+		if(side) {	//TODO : changer les positions des joueurs
+			this.setX(10);
+			this.setY(400);
+		} else {
+			this.setX(400);
+			this.setY(400);
+		}
 	}
 	
 	public void update(GameContainer container, StateBasedGame game, int delta) {
