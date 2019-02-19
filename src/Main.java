@@ -39,7 +39,6 @@ public final class Main {
 			}
 			StateBasedGame game = new StateBasedGame(title) {
 
-				@Override
 				public void initStatesList(GameContainer container) {
 					this.addState(new pages.Welcome(0));
 					this.addState(new pages.Choice(1));

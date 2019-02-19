@@ -34,7 +34,6 @@ public class Welcome extends AppPage {
 		super(ID);
 	}
 
-	@Override
 	public void init(GameContainer container, StateBasedGame game) {
 		super.initSize(container, game, 600, 400);
 		super.init(container, game);
@@ -57,7 +56,6 @@ public class Welcome extends AppPage {
 		this.setLogo(AppLoader.loadPicture("/images/logo.png"));
 	}
 
-	@Override
 	public void update(GameContainer container, StateBasedGame game, int  delta) {
 		super.update(container, game, delta);
 		Input input = container.getInput();
@@ -68,7 +66,6 @@ public class Welcome extends AppPage {
 		}
 	}
 
-	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics context) {
 		super.render(container, game, context);
 		this.renderLogo(container, game, context);
