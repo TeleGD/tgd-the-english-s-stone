@@ -32,6 +32,7 @@ public class Duel extends BasicGameState {
 	private Character[] characters;
 	private List<Integer> failures;
 	private List<Integer> durations;
+	private List<Spell> spells;
 	private String title;
 	private String subTitle;
 	private Font titleFont;
@@ -96,8 +97,8 @@ public class Duel extends BasicGameState {
 		this.subject = subject;
 		this.chapter = subject.getChapter(index);
 		int side = Duel.RNG.nextInt(2);
-		this.characters[side] = new Player();
-		this.characters[1 - side] = new AI();
+		// this.characters[side] = new Player();
+		// this.characters[1 - side] = new AI();
 		this.failures.clear();
 		this.durations.clear();
 		this.title = "Subject: " + this.subject.getName();
@@ -112,8 +113,15 @@ public class Duel extends BasicGameState {
 		this.subTitleY = 100 - this.subTitleFont.getHeight(subTitle) / 2;
 	}
 
-	public void end() {
+	public void end() {}
 
+	public void characterDied(boolean side) {
+		//TODO : indiquer la fin du duel
+	}
+
+	public void launchSpell(int x, int y, boolean side, int star, int damage) {
+		Spell spell = new Spell(x, y, side, star, damage);
+		spells.add(spell);
 	}
 
 }
