@@ -2,11 +2,10 @@ package english;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.state.StateBasedGame;
 
 import app.AppLoader;
-
-import org.newdawn.slick.Image;
 
 public class Entity {
 
@@ -19,13 +18,15 @@ public class Entity {
 	private int spriteHeight;
 	private int spriteNaturalWidth;
 	private int spriteNaturalHeight;
-	protected boolean side; // true : Character à droite, false : Character à gauche
+	protected boolean side; // true : Regarde vers la droite, false : Regarde vers la gauche
 	
-	public Entity(String spritePath, int x, int y, int dx) {
+	public Entity(String spritePath, int spriteWidth, int spriteHeight, int x, int y, int dx) {
 		this.setSprite(AppLoader.loadPicture(spritePath));
 		dy = 0;
 		this.x = x;
 		this.y = y;
+		this.spriteWidth = spriteWidth;
+		this.spriteHeight = spriteHeight;
 		this.dx = dx;
 		this.side = (dx>=0);
 	}
@@ -38,7 +39,7 @@ public class Entity {
 	public void render(GameContainer container, StateBasedGame game, Graphics context) {
 		renderSprite(container, game, context);   // Affichage du sprite de Entity
 	}
-	
+
 	public void renderSprite(GameContainer container, StateBasedGame game, Graphics context) {
 		context.drawImage(
 				this.sprite.getFlippedCopy(side, false),

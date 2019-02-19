@@ -19,13 +19,13 @@ public abstract class Character extends Entity {
 	private Exercise exercise;
 
 	public Character(String spritePath, String name, int HPmax, Duel duel, boolean side) {
-		super(spritePath, 0, 0, 0);
+		super(spritePath,16*5,32*5, 0, 0, 0);
 		this.name = name;
 		this.HPmax = HPmax;
 		this.duel = duel;
 		this.side = side;
 		
-		if(side) {	//TODO : changer les positions des joueurs
+		if(!side) {	//TODO : changer les positions des joueurs
 			this.setX(10);
 			this.setY(400);
 		} else {
@@ -71,5 +71,7 @@ public abstract class Character extends Entity {
 			return false;
 		}
 	}
+
+	public void keyPressed(int key, char value) {}
 
 }

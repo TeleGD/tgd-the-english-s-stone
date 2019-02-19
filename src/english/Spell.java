@@ -9,7 +9,7 @@ public class Spell extends Entity {
 	private int damage;
 
 	public Spell(int x, int y, boolean side, int star, int damage) {
-		super("images/spell/Arcane_Effect_4.png", x, y, (side? -1 : 1)* 10 );
+		super("/images/spell/Arcane_Effect_4.png",30,30, x, y, (side? -1 : 1)* 10 );
 		this.star = star;
 		this.damage = damage;
 	}
