@@ -10,17 +10,17 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public final class Main {
 
-	public static final void main (String [] arguments) throws SlickException {
+	public static final void main(String[] arguments) throws SlickException {
 		String title = "Sans titre";
 		int width = 1280;
 		int height = 720;
 		boolean fullscreen = false;
 		String request = "Voulez-vous jouer en plein écran ?";
-		Object [] options = {
+		Object[] options = {
 			"Oui",
 			"Non"
 		};
-		int returnValue = JOptionPane.showOptionDialog (
+		int returnValue = JOptionPane.showOptionDialog(
 			null,
 			request,
 			title,
@@ -28,31 +28,30 @@ public final class Main {
 			JOptionPane.QUESTION_MESSAGE,
 			null,
 			options,
-			options [0]
+			options[0]
 		);
 		if (returnValue != -1) {
 			if (returnValue == 0) {
-				DisplayMode display = GraphicsEnvironment.getLocalGraphicsEnvironment ().getDefaultScreenDevice ().getDisplayMode ();
-				width = display.getWidth ();
-				height = display.getHeight ();
+				DisplayMode display = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
+				width = display.getWidth();
+				height = display.getHeight();
 				fullscreen = true;
 			}
-			StateBasedGame game = new StateBasedGame (title) {
+			StateBasedGame game = new StateBasedGame(title) {
 
 				@Override
-				public void initStatesList (GameContainer container) {
-					this.addState (new pages.Welcome (0));
-					this.addState (new pages.Choice (1));
-					this.addState (new pages.Pause (2));
-					this.addState (new test.World (3));
+				public void initStatesList(GameContainer container) {
+					this.addState(new pages.Welcome(0));
+					this.addState(new pages.Choice(1));
+					this.addState(new english.Duel(2));
 				}
 
 			};
-			AppGameContainer container = new AppGameContainer (game, width, height, fullscreen);
-			container.setTargetFrameRate (60);
-			container.setVSync (true);
-			container.setShowFPS (false);
-			container.start ();
+			AppGameContainer container = new AppGameContainer(game, width, height, fullscreen);
+			container.setTargetFrameRate(60);
+			container.setVSync(true);
+			container.setShowFPS(false);
+			container.start();
 		}
 	}
 
