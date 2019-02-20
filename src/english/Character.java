@@ -1,10 +1,13 @@
 package english;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
 
 import app.ui.TextField;
+
+import java.util.ArrayList;
 
 public abstract class Character extends Entity {
 
@@ -13,26 +16,35 @@ public abstract class Character extends Entity {
 	private int HPcount;
 	private int damage;
 	private int starMax;
-	private int starCount;
+	private int xName;
+	private int yName;
 	private TextField textField; //TODO : implémenter un TextField basique
 	private Duel duel;
 	private Exercise exercise;
+	private ArrayList<Entity> stars;
+	private HealthBar healthBar;
 
 	public Character(String spritePath, String name, int HPmax, Duel duel, boolean side) {
 		super(spritePath,16*5,32*5, 0, 0, 0);
 		this.name = name;
 		this.HPmax = HPmax;
+		this.HPcount = HPmax;
 		this.duel = duel;
 		this.side = side;
 		this.starMax = 3;
-		this.starCount = starMax;	//TODO : retirer cette ligne lorsque le Character aura eu un Exercise d'attribué
-		
+		this.stars = new ArrayList<>();
+		this.healthBar = new HealthBar(side? 1280 : 0, 680,1280/2,40,HPmax,side);
+		this.damage = 40;
+
+		this.yName = 640;
 		if(!side) {	//TODO : changer les positions des joueurs
-			this.setX(10);
-			this.setY(400);
+			this.setX(80);
+			this.setY(440);
+			this.xName = 80;
 		} else {
-			this.setX(400);
-			this.setY(400);
+			this.setX(1120);
+			this.setY(440);
+			this.xName = 720;
 		}
 	}
 	
@@ -42,6 +54,14 @@ public abstract class Character extends Entity {
 
 	public void render(GameContainer container, StateBasedGame game, Graphics context) {
 		super.render(container, game, context);	// Render d'Entity
+		for (Entity star : stars){  // Render des étoiles
+			star.render(container,game,context);
+		}
+		healthBar.render(container,game,context);   // Render de la barre de HP
+		// Affichage textuel des HP :
+		context.setColor(Color.white);
+		context.drawString(name, xName, yName);
+
 	}
 	
 	public void takeDamage(int damageDone) {
@@ -50,29 +70,34 @@ public abstract class Character extends Entity {
 			HPcount = 0;
 			duel.characterDied(side); // Préviens le Duel qu'un joueur est mort
 		}
+		healthBar.setCurrentHP(HPcount);
 	}
 	
 	public void setexercise(Exercise exercise) {
 		this.exercise = exercise;
-		starCount = starMax;
+		for (int i = stars.size(); i < starMax; i++){ // On ne remplace que les star qu'il manque
+			int posX = getX() - 40 + 60 * i;
+			int posY = getY() - 40;
+			stars.add(new Entity("/images/star.png",40,40,posX,posY,0));
+		}
 	}
 	
 	public void launchSpell() {
-		duel.launchSpell(this.getX(),this.getY(),side,starCount, damage);  // Faire partir le sort de la main du Character, plutôt que depuis sa position
+		duel.launchSpell(this.getX(),this.getY(),side,stars.size(), damage);  // Faire partir le sort de la main du Character, plutôt que depuis sa position
 	}
 	
 	public boolean checkAnswer() {
-		if(starCount > 0 && textField.getText().equals(exercise.getAnswer())) {
+		if(stars.size() > 0 && textField.getText().equals(exercise.getAnswer())) {
 			launchSpell();
 			return true;
 		} else {  // Retire une étoile
-			starCount--;
-			if(starCount <= 0) {
-				starCount = 0;
+			if(stars.size() > 0){
+				stars.remove(stars.size()-1);
 			}
 			return false;
 		}
 	}
+
 
 	public void keyPressed(int key, char value) {}
 

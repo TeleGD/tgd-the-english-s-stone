@@ -16,6 +16,7 @@ public class Player extends Character {
 		Input input = container.getInput ();
 		if (input.isKeyPressed (Input.KEY_RETURN)) { //TODO : retirer cet Input de debug
 			launchSpell();
+			System.out.println("Je lance un sort !");
 		}
 	}
 

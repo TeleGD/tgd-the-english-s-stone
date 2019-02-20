@@ -84,8 +84,9 @@ public class Duel extends BasicGameState {
 			Spell spell1 = spells.get(1);
 			if (spell0.getX() + spell0.getSpriteWidth() > spell1.getX()) {	// S'il y a collision entre Spell
 				//Collision entre Spell
-				spell0.collideWithOtherSpell(spell1);
-				spell1.collideWithOtherSpell(spell0);
+				int starOfSpell0 =spell0.getStar();
+				spell0.collideWithOtherSpell(spell1.getStar());
+				spell1.collideWithOtherSpell(starOfSpell0);
 				// Destruction des Spell tombés à zéro star
 				if (spell0.getStar() <=0) {
 					spells.remove(spell0);
@@ -102,7 +103,7 @@ public class Duel extends BasicGameState {
 					spellTouchCharacter(1, spell);
 				}
 			} else {	// Si le Spell va vers la gauche
-				if (characters[1].getX() + characters[1].getSpriteWidth() >= spell.getX()) {	// Si le Spell est plus à gauche que le Character
+				if (characters[0].getX() + characters[0].getSpriteWidth() >= spell.getX()) {	// Si le Spell est plus à gauche que le Character
 					spellTouchCharacter(0, spell);
 				}
 			}	
@@ -139,7 +140,8 @@ public class Duel extends BasicGameState {
 
 	public void start(Subject subject, int index) {
 		// Partie Character et Spell :
-		int side = Duel.RNG.nextInt(2);
+//		int side = Duel.RNG.nextInt(2);
+		int side = 1;
 		boolean sideBoolean = side==1? true : false;
 		this.characters[side] = new Player("JOUEUR",1000,this, sideBoolean);
 		this.characters[1 - side] = new AI("Deep Neural Network", 1000,this, !sideBoolean);
@@ -162,6 +164,10 @@ public class Duel extends BasicGameState {
 		this.subTitleColor = Color.white;
 		this.subTitleX = 640 - this.subTitleFont.getWidth(subTitle) / 2;
 		this.subTitleY = 100 - this.subTitleFont.getHeight(subTitle) / 2;
+
+		for(Character character : characters){  //TODO : remplacer cette attribution de base
+			character.setexercise(new Exercise());
+		}
 	}
 
 	public void end() {}

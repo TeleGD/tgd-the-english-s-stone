@@ -1,6 +1,8 @@
 package english;
 
-import org.newdawn.slick.GameContainer; import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.state.StateBasedGame;
 
 public class AI extends Character {
 	
@@ -11,6 +13,12 @@ public class AI extends Character {
 		// TODO Auto-generated constructor stub
 	}
 
-	public void update(GameContainer container, StateBasedGame game, int delta) {}
+	public void update(GameContainer container, StateBasedGame game, int delta) {
+		Input input = container.getInput ();
+		if (input.isKeyPressed (Input.KEY_M)) { //TODO : retirer cet Input de debug
+			launchSpell();
+			System.out.println("Je lance un sort !");
+		}
+	}
 
 }
