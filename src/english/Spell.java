@@ -1,6 +1,7 @@
 package english;
 
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -10,7 +11,7 @@ public class Spell extends Entity {
 	private int damage;
 
 	public Spell(int x, int y, boolean side, int star, int damage) {
-		super("/images/spell/spritesheetSpell.png",100,100,124,108,1, x, y, (side? -1 : 1)* 5, side );
+		super("/images/spell/spritesheetSpell.png",100,100,124,108,3, x, y, (side? -1 : 1)* 5, side );
 		this.star = star;
 		this.damage = damage;
 	}
@@ -20,9 +21,15 @@ public class Spell extends Entity {
 		//TODO : check de colision avec un Character ou un autre Spell
 	}
 
+	public void render(GameContainer container, StateBasedGame game, Graphics context) {
+		super.render(container, game, context, star - 1);
+	}
+
 	@Override
 	public void loadAnimations(SpriteSheet spriteSheet) {
-		loadAnimation(spriteSheet,0,6,0, 0);
+		for (int i = 0; i < 3; i++) {
+			loadAnimation(spriteSheet,0,6,i, i);
+		}
 	}
 
 	public int getDamageToDo() {

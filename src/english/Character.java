@@ -22,6 +22,7 @@ public abstract class Character extends Entity {
 	private ArrayList<Entity> stars;
 	private List<Spell> spells;
 	private HealthBar healthBar;
+	private float timeAnimRemainingMax;
 
 	/*Etat du character :
 	* 0 : iddle
@@ -29,6 +30,7 @@ public abstract class Character extends Entity {
 	* 2 : launch spell
 	* 3 : death */
 	private int state = 0;
+	private float timeAnimRemaining;    // Temps avant réinitialisation de l'animation
 
 	public static final Font textFont = AppLoader.loadFont("/fonts/vt323.ttf", java.awt.Font.BOLD, 30);
 
@@ -46,6 +48,7 @@ public abstract class Character extends Entity {
 		this.damage = 40;
 		this.textField = new TextField(200 + (side ? 640 : 0), 240, 400, 40, 10, 2);
 		this.yName = 640;
+		this.timeAnimRemainingMax = 500;
 		if(!side) {	//TODO : changer les positions des joueurs
 			this.setX(80);
 			this.setY(440);
@@ -62,6 +65,18 @@ public abstract class Character extends Entity {
 		for (Spell spell : spells){
 			spell.update(container, game, delta);
 		}
+
+		if (timeAnimRemaining > 0) {    // gère les fins d'animations
+			timeAnimRemaining -= delta;
+			if (timeAnimRemaining <= 0){
+				if (state == 2){    // Si on est à la fin de l'animation de cast de spell, on lance le spell
+					launchSpell();
+				}
+				state = 0;
+				timeAnimRemaining = 0;
+			}
+		}
+
 	}
 
 	public void render(GameContainer container, StateBasedGame game, Graphics context) {
@@ -72,7 +87,7 @@ public abstract class Character extends Entity {
 		}
 
 		for (Spell spell : spells){
-			spell.render(container, game, context,0);
+			spell.render(container, game, context);
 		}
 
 		healthBar.render(container,game,context);   // Render de la barre de HP
@@ -83,13 +98,19 @@ public abstract class Character extends Entity {
 
 	}
 
-	public void takeDamage(int damageDone) {
+	public void takeDamage(int damageDone) {    // En l'état, prendre des dégats annule le lancer de sort en cours
 		HPcount -= damageDone;
 		if (HPcount <= 0 ) {
 			HPcount = 0;
+			timeAnimRemaining = timeAnimRemainingMax;
+			state = 3;  // Lance l'animation de mort
 			duel.characterDied(side); // Préviens le Duel qu'un joueur est mort
+		} else {
+			timeAnimRemaining = timeAnimRemainingMax;
+			state = 1;  // Lance l'animation des dégats
 		}
 		healthBar.setCurrentHP(HPcount);
+
 	}
 
 	public void setexercise(Exercise exercise) {
@@ -101,13 +122,26 @@ public abstract class Character extends Entity {
 		}
 	}
 
+	/**
+	 * Lance l'animation de lancer de sort, lancera le sort à la fin de cette animation
+	 */
+	public void castSpell(){
+		if (stars.size() <= 0){
+			return;
+		}
+		timeAnimRemaining = timeAnimRemainingMax;
+		state = 2;
+	}
+
+	/**
+	 * Lance un sort
+	 */
 	public void launchSpell() {
 		spells.add(new Spell(this.getX(),this.getY(),side,stars.size(), damage));
 	}
 
 	public boolean checkAnswer(String text) {
 		if(stars.size() > 0 && text.equals(exercise.getAnswer())) {
-			launchSpell();
 			return true;
 		} else {  // Retire une étoile
 			if(stars.size() > 0){

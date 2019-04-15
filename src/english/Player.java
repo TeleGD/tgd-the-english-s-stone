@@ -36,10 +36,14 @@ public class Player extends Character {
 				if (this.checkAnswer(text)) {
 					textField.setText("");
 					textField.setCaret(0);
-					this.launchSpell();
-					System.out.println("Je lance un sort !");
+					this.castSpell();
+					System.out.println("Joueur : Je lance un sort !");
 				}
 				return;
+			}
+			case Input.KEY_RCONTROL: {  // TODO : retirer ce débug plus tard
+				this.castSpell();
+				System.out.println("Joueur : JE CHEAT : Je lance un sort !");
 			}
 			case Input.KEY_LEFT: {
 				if (caret > 0) {

@@ -17,8 +17,8 @@ public class AI extends Character {
 		super.update(container, game, delta);
 		Input input = container.getInput ();
 		if (input.isKeyPressed (Input.KEY_M)) { //TODO : retirer cet Input de debug
-			launchSpell();
-			System.out.println("Je lance un sort !");
+			castSpell();
+			System.out.println("IA : Je lance un sort !");
 		}
 	}
 
