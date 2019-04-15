@@ -69,7 +69,7 @@ public class Duel extends BasicGameState {
 
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 		/* Méthode exécutée environ 60 fois par seconde */
-		
+
 		// Updates des Entity :
 		for (Character character: this.characters) {
 			character.update(container, game, delta);
@@ -77,8 +77,8 @@ public class Duel extends BasicGameState {
 		for (Spell spell : this.spells) {
 			spell.update(container, game, delta);
 		}
-		
-		//Collisions : 
+
+		//Collisions :
 		if (spells.size()==2) {	// Collision entre Spell
 			Spell spell0 = spells.get(0);
 			Spell spell1 = spells.get(1);
@@ -106,10 +106,10 @@ public class Duel extends BasicGameState {
 				if (characters[0].getX() + characters[0].getSpriteWidth() >= spell.getX()) {	// Si le Spell est plus à gauche que le Character
 					spellTouchCharacter(0, spell);
 				}
-			}	
+			}
 		}
 	}
-	
+
 	public void spellTouchCharacter(int i, Spell spell) {
 		characters[i].takeDamage(spell.getDamageToDo());	// Inflige les dégâts au Character
 		spells.remove(spell);	//Retire le Spell
@@ -126,7 +126,7 @@ public class Duel extends BasicGameState {
 		for (Character character: this.characters) {
 			character.render(container, game, context);
 		}
-		
+
 		for (Spell spell : spells) {
 			spell.render(container, game, context);
 		}
@@ -138,7 +138,8 @@ public class Duel extends BasicGameState {
 		}
 	}
 
-	public void start(Subject subject, int index) {
+	public void start(GameContainer container, Subject subject, int index) {
+		container.getInput().enableKeyRepeat();
 		// Partie Character et Spell :
 //		int side = Duel.RNG.nextInt(2);
 		int side = 1;
@@ -146,11 +147,11 @@ public class Duel extends BasicGameState {
 		this.characters[side] = new Player("JOUEUR",1000,this, sideBoolean);
 		this.characters[1 - side] = new AI("Deep Neural Network", 1000,this, !sideBoolean);
 		this.spells = new ArrayList<>(2);
-		
+
 		//Partie statistiques :
 		this.failures.clear();
 		this.durations.clear();
-		
+
 		// Partie affichage chapitre et sujet :
 		this.subject = subject;
 		this.chapter = subject.getChapter(index);
@@ -165,12 +166,14 @@ public class Duel extends BasicGameState {
 		this.subTitleX = 640 - this.subTitleFont.getWidth(subTitle) / 2;
 		this.subTitleY = 100 - this.subTitleFont.getHeight(subTitle) / 2;
 
-		for(Character character : characters){  //TODO : remplacer cette attribution de base
-			character.setexercise(new Exercise());
+		for(Character character: characters) { // TODO: remplacer cette attribution de base
+			character.setexercise(new Exercise("Conjugate \"have\" at...", "has"));
 		}
 	}
 
-	public void end() {}
+	public void end(GameContainer container) {
+		container.getInput().enableKeyRepeat();
+	}
 
 	public void characterDied(boolean side) {
 		//TODO : indiquer la fin du duel

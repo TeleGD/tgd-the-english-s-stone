@@ -3,9 +3,8 @@ package english;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
-
-import app.ui.TextField;
 
 import java.util.ArrayList;
 
@@ -33,9 +32,9 @@ public abstract class Character extends Entity {
 		this.side = side;
 		this.starMax = 3;
 		this.stars = new ArrayList<>();
-		this.healthBar = new HealthBar(side? 1280 : 0, 680,1280/2,40,HPmax,side);
+		this.healthBar = new HealthBar(side ? 1280 : 0, 680,1280/2,40,HPmax,side);
 		this.damage = 40;
-
+		this.textField = new TextField(200 + (side ? 640 : 0), 240, 400, 40, 10, 2);
 		this.yName = 640;
 		if(!side) {	//TODO : changer les positions des joueurs
 			this.setX(80);
@@ -47,13 +46,14 @@ public abstract class Character extends Entity {
 			this.xName = 720;
 		}
 	}
-	
+
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 		super.update(container, game, delta);	// Update d'Entity
 	}
 
 	public void render(GameContainer container, StateBasedGame game, Graphics context) {
 		super.render(container, game, context);	// Render d'Entity
+		textField.render(container, game, context);
 		for (Entity star : stars){  // Render des étoiles
 			star.render(container,game,context);
 		}
@@ -63,7 +63,7 @@ public abstract class Character extends Entity {
 		context.drawString(name, xName, yName);
 
 	}
-	
+
 	public void takeDamage(int damageDone) {
 		HPcount -= damageDone;
 		if (HPcount <= 0 ) {
@@ -72,7 +72,7 @@ public abstract class Character extends Entity {
 		}
 		healthBar.setCurrentHP(HPcount);
 	}
-	
+
 	public void setexercise(Exercise exercise) {
 		this.exercise = exercise;
 		for (int i = stars.size(); i < starMax; i++){ // On ne remplace que les star qu'il manque
@@ -81,13 +81,13 @@ public abstract class Character extends Entity {
 			stars.add(new Entity("/images/star.png",40,40,posX,posY,0));
 		}
 	}
-	
+
 	public void launchSpell() {
 		duel.launchSpell(this.getX(),this.getY(),side,stars.size(), damage);  // Faire partir le sort de la main du Character, plutôt que depuis sa position
 	}
-	
-	public boolean checkAnswer() {
-		if(stars.size() > 0 && textField.getText().equals(exercise.getAnswer())) {
+
+	public boolean checkAnswer(String text) {
+		if(stars.size() > 0 && text.equals(exercise.getAnswer())) {
 			launchSpell();
 			return true;
 		} else {  // Retire une étoile
@@ -98,6 +98,9 @@ public abstract class Character extends Entity {
 		}
 	}
 
+	public TextField getTextField() {
+		return this.textField;
+	}
 
 	public void keyPressed(int key, char value) {}
 

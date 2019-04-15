@@ -30,7 +30,7 @@ public class Choice extends AppMenu {
 		this.setMenu(Arrays.asList(new MenuItem[] {
 			new MenuItem("English project") {
 				public void itemSelected() {
-					Exercise exercise = new Exercise();
+					Exercise exercise = new Exercise("Conjugate \"be\" at...", "is");
 					List<Exercise> exercises = new ArrayList<Exercise>();
 					exercises.add(exercise);
 					Chapter chapter = new Chapter("Irregular verbs", "", null, exercises);
@@ -38,7 +38,7 @@ public class Choice extends AppMenu {
 					chapters.add(chapter);
 					Subject subject = new Subject("Conjugaison", "", chapters);
 					Duel duel = (Duel) game.getState(2);
-					duel.start(subject, 0);
+					duel.start(container, subject, 0);
 					game.enterState(2, new FadeOutTransition(), new FadeInTransition());
 				}
 			},
