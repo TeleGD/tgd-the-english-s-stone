@@ -1,11 +1,7 @@
 package english;
 
 import app.AppLoader;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Font;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
 import java.util.ArrayList;
@@ -27,16 +23,22 @@ public abstract class Character extends Entity {
 	private List<Spell> spells;
 	private HealthBar healthBar;
 
+	/*Etat du character :
+	* 0 : iddle
+	* 1 : impact
+	* 2 : launch spell
+	* 3 : death */
+	private int state = 0;
+
 	public static final Font textFont = AppLoader.loadFont("/fonts/vt323.ttf", java.awt.Font.BOLD, 30);
 
 
 	public Character(String spritePath, String name, int HPmax, Duel duel, boolean side) {
-		super(spritePath,16*5,32*5, 0, 0, 0);
+		super(spritePath,16*5,32*5,32, 32,4, 0, 0, 0, side);
 		this.name = name;
 		this.HPmax = HPmax;
 		this.HPcount = HPmax;
 		this.duel = duel;
-		this.side = side;
 		this.starMax = 3;
 		this.stars = new ArrayList<>();
 		this.spells = new ArrayList<>();
@@ -63,14 +65,14 @@ public abstract class Character extends Entity {
 	}
 
 	public void render(GameContainer container, StateBasedGame game, Graphics context) {
-		super.render(container, game, context);	// Render d'Entity
+		super.render(container, game, context, state);	// Render d'Entity
 		textField.render(container, game, context);
 		for (Entity star : stars){  // Render des étoiles
-			star.render(container,game,context);
+			star.render(container,game,context,0);
 		}
 
 		for (Spell spell : spells){
-			spell.render(container, game, context);
+			spell.render(container, game, context,0);
 		}
 
 		healthBar.render(container,game,context);   // Render de la barre de HP
@@ -95,7 +97,7 @@ public abstract class Character extends Entity {
 		for (int i = stars.size(); i < starMax; i++){ // On ne remplace que les star qu'il manque
 			int posX = getX() - 40 + 60 * i;
 			int posY = getY() - 40;
-			stars.add(new Entity("/images/star.png",40,40,posX,posY,0));
+			stars.add(new Star("/images/star.png",40,40, 512, 512, posX,posY,0));
 		}
 	}
 
@@ -127,5 +129,18 @@ public abstract class Character extends Entity {
 
 	public void removeSpell(Spell spell){
 		spells.remove(spell);
+	}
+
+	@Override
+	public void loadAnimations(SpriteSheet spriteSheet) {
+		loadAnimation(spriteSheet,0,9,0, 0);
+		loadAnimation(spriteSheet,0,9,1, 1);
+		loadAnimation(spriteSheet,0,9,3, 2);
+		loadAnimation(spriteSheet,0,9,4, 3);
+		// Maintenant animations contient :
+		// Ligne 0 : iddle
+		// Ligne 1 : impact
+		// Ligne 2 : launch spell
+		// Ligne 3 : death
 	}
 }

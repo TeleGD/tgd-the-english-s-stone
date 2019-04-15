@@ -1,34 +1,51 @@
 package english;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
 import app.AppLoader;
 
-public class Entity {
+public abstract class Entity {
 
 	private int x;
 	private int y;
 	private int dx;
 	private int dy;
-	private Image sprite;
+	private Animation[] animations; // Tableau d'animations différences (qui sont des ensembles de sprites)
 	private int spriteWidth;
 	private int spriteHeight;
 	private int spriteNaturalWidth;
 	private int spriteNaturalHeight;
 	protected boolean side; // true : Regarde vers la droite, false : Regarde vers la gauche
-	
-	public Entity(String spritePath, int spriteWidth, int spriteHeight, int x, int y, int dx) {
-		this.setSprite(AppLoader.loadPicture(spritePath));
+
+	/**
+	 * @param spritePath
+	 * @param spriteWidth largeur d'un sprite à l'affichage
+	 * @param spriteHeight hauteur d'un sprite à l'affichage
+	 * @param spriteNaturalWidth largeur d'un sprite dans le spriteSheet des ressources du jeu
+	 * @param spriteNaturalHeight hauteur d'un sprite dans le spriteSheet des ressources du jeu
+	 * @param x
+	 * @param y
+	 * @param dx
+	 * @param side
+	 */
+	public Entity(String spritePath, int spriteWidth, int spriteHeight, int spriteNaturalWidth, int spriteNaturalHeight, int nbAnimLines, int x, int y, int dx, boolean side) {
+		this.spriteWidth = spriteWidth;
+		this.spriteHeight = spriteHeight;
 		dy = 0;
 		this.x = x;
 		this.y = y;
-		this.spriteWidth = spriteWidth;
-		this.spriteHeight = spriteHeight;
 		this.dx = dx;
-		this.side = (dx>=0);
+		this.side = side;
+
+		// Chargements des sprites dans les animations :
+		SpriteSheet spriteSheet = null;
+		Image spriteImage = AppLoader.loadPicture(spritePath);
+		spriteSheet = new SpriteSheet(spriteImage, spriteNaturalWidth, spriteNaturalHeight);
+
+		animations = new Animation[nbAnimLines];
+		loadAnimations(spriteSheet);
+
 	}
 
 	public void update(GameContainer container, StateBasedGame game, int delta) {
@@ -36,32 +53,12 @@ public class Entity {
 		y += dy;
 	}
 
-	public void render(GameContainer container, StateBasedGame game, Graphics context) {
-		renderSprite(container, game, context);   // Affichage du sprite de Entity
+	public void render(GameContainer container, StateBasedGame game, Graphics context, int animLine) {
+		renderSprite(container, game, context, animLine);   // Affichage du sprite de Entity
 	}
 
-	public void renderSprite(GameContainer container, StateBasedGame game, Graphics context) {
-		context.drawImage(
-				this.sprite.getFlippedCopy(side, false),
-				this.x,
-				this.y,
-				this.x + this.spriteWidth,
-				this.y + this.spriteHeight,
-				0,
-				0,
-				spriteNaturalWidth,
-				spriteNaturalHeight
-			);
-	}
-
-	public Image getSprite() {
-		return sprite;
-	}
-
-	public void setSprite(Image sprite) {
-		this.sprite = sprite;
-		this.spriteNaturalHeight = sprite.getHeight();
-		this.spriteNaturalWidth = sprite.getWidth();
+	public void renderSprite(GameContainer container, StateBasedGame game, Graphics context, int animLine) {
+		context.drawAnimation(animations[animLine], this.x, this.y);    //TODO : vérifier qu'il n'y a pas de décalage x y
 	}
 
 	public int getX() {
@@ -95,5 +92,27 @@ public class Entity {
 	public boolean getSide() {
 		return side;
 	}
+
+	/**
+	 * Charge une ligne de spritesheet dans une Animation
+	 * @param spriteSheet
+	 * @param startX
+	 * @param endX
+	 * @param animLineToLoad
+	 * @param animLineToStore
+	 * @return
+	 */
+	public void loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int animLineToLoad, int animLineToStore) {
+		Animation animation = new Animation();
+		for (int x = startX; x < endX; x++) {
+			animation.addFrame(spriteSheet.getSprite(x, animLineToLoad).getScaledCopy(spriteWidth, spriteHeight).getFlippedCopy(side, false), 100);
+		}
+		animations[animLineToStore] = animation;
+	}
+
+	/**
+	 * Charge les bonnes animations en fonction de la sous-classe de Entity
+	 */
+	public abstract void loadAnimations(SpriteSheet spriteSheet);
 
 }
