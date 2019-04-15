@@ -22,9 +22,14 @@ public class Spell extends Entity {
 	public int getDamageToDo() {
 		return (int) (damage * star) /3;
 	}
-	
+
+	/**
+	 * Retourne le nombre de star restant après différence avec le nombre de star de spell
+	 * @param starOfOtherSpell
+	 * @return
+	 */
 	public int collideWithOtherSpell(int starOfOtherSpell) {
-		// Retourne le nombre de star restant après différence avec le nombre de star de spell
+
 		star -= starOfOtherSpell;
 		if (star <= 0) {
 			star = 0;

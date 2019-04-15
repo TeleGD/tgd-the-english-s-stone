@@ -1,11 +1,17 @@
 package english;
 
+import app.AppLoader;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class HealthBar {
+
+	public static final Font textFont = AppLoader.loadFont("/fonts/vt323.ttf", java.awt.Font.BOLD, 24);
+
+
 	int maxHP;
 	int currentHP;
 	int x0;
@@ -63,6 +69,7 @@ public class HealthBar {
 		context.fillRect(x0Bar, y0, (int)(width*(double)(currentHP)/maxHP), height);
 
 		// Affichage textuel des HP :
+		context.setFont(textFont);
 		context.setColor(Color.white);
 		context.drawString("HP : "+ currentHP +" / " + maxHP, xText, yText);
 	}
