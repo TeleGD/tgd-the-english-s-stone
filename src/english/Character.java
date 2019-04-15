@@ -1,6 +1,8 @@
 package english;
 
+import app.AppLoader;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
@@ -25,6 +27,9 @@ public abstract class Character extends Entity {
 	private ArrayList<Entity> stars;
 	private List<Spell> spells;
 	private HealthBar healthBar;
+
+	public static final Font textFont = AppLoader.loadFont("/fonts/vt323.ttf", java.awt.Font.BOLD, 30);
+
 
 	public Character(String spritePath, String name, int HPmax, Duel duel, boolean side) {
 		super(spritePath,16*5,32*5, 0, 0, 0);
@@ -70,6 +75,7 @@ public abstract class Character extends Entity {
 
 		healthBar.render(container,game,context);   // Render de la barre de HP
 		// Affichage textuel des HP :
+		context.setFont(textFont);
 		context.setColor(Color.white);
 		context.drawString(name, xName, yName);
 

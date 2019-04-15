@@ -21,9 +21,12 @@ public class Duel extends BasicGameState {
 	static private Random RNG;
 	static private Font font;
 
+
+
 	static {
 		Duel.RNG = new Random();
 		Duel.font = AppLoader.loadFont("/fonts/press-start-2p.ttf", java.awt.Font.BOLD, 40);
+
 	}
 
 	private int ID;
