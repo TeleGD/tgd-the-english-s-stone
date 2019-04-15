@@ -32,7 +32,6 @@ public class Duel extends BasicGameState {
 	private Character[] characters;
 	private List<Integer> failures;
 	private List<Integer> durations;
-	private List<Spell> spells;
 	private String title;
 	private String subTitle;
 	private Font titleFont;
@@ -74,45 +73,48 @@ public class Duel extends BasicGameState {
 		for (Character character: this.characters) {
 			character.update(container, game, delta);
 		}
-		for (Spell spell : this.spells) {
-			spell.update(container, game, delta);
-		}
-		
-		//Collisions : 
-		if (spells.size()==2) {	// Collision entre Spell
-			Spell spell0 = spells.get(0);
-			Spell spell1 = spells.get(1);
-			if (spell0.getX() + spell0.getSpriteWidth() > spell1.getX()) {	// S'il y a collision entre Spell
-				//Collision entre Spell
-				int starOfSpell0 =spell0.getStar();
-				spell0.collideWithOtherSpell(spell1.getStar());
-				spell1.collideWithOtherSpell(starOfSpell0);
-				// Destruction des Spell tombés à zéro star
-				if (spell0.getStar() <=0) {
-					spells.remove(spell0);
+
+		//Collisions :
+		int distanceBetweenCharacters = Math.abs(this.characters[0].getX() - this.characters[1].getX()) - this.characters[0].getSpriteWidth();  // Distance que doit parcourir un spell pour toucher l'autre personnage
+		List<Spell> spellsToRemove1 = new ArrayList<>();
+		List<Spell> spellsToRemove2 = new ArrayList<>();
+		List<Spell>[] removeLists = new List[]{spellsToRemove1, spellsToRemove2};
+
+		for (int i = 0; i < 2; i++){
+			Character character1 = this.characters[i];
+			Character character2 = this.characters[1-i];
+
+			for (Spell spell1 : character1.getSpells()){
+				// Collision avec l'autre personnage :
+				if (Math.abs((spell1.getX() + spell1.getSpriteWidth()/2) - (character1.getX() + character1.getSpriteWidth()/2)) >= distanceBetweenCharacters ) {	// Si le Spell a parcourut une plus grande distance que celle séparant les personnages : il a touché l'autre personnage
+					spellTouchCharacter(1-i, spell1);
+					removeLists[i].add(spell1);
 				}
-				if (spell1.getStar() <=0) {
-					spells.remove(spell1);
+
+				// Collision avec un sort de l'adversaire :
+				for (Spell spell2 : character2.getSpells()){
+					if (Math.abs(spell1.getX() - spell2.getX())  <=  spell1.getSpriteWidth()) {	// S'il y a collision entre Spell
+						//Collision entre Spell
+						int starOfSpell1 =spell1.getStar();
+						spell1.collideWithOtherSpell(spell2.getStar());
+						spell2.collideWithOtherSpell(starOfSpell1);
+						// Destruction des Spell tombés à zéro star
+						if (spell1.getStar() <=0) {
+							spellsToRemove1.add(spell1);
+						}
+						if (spell2.getStar() <=0) {
+							spellsToRemove2.add(spell2);
+						}
+					}
 				}
 			}
 		}
-		for (int i = 0; i < spells.size() ; i++) {	// Collision entre Spell et Character
-			Spell spell = spells.get(i);
-			if (spell.getSide()) {	// Si le Spell va vers la droite
-				if (spell.getX() + spell.getSpriteWidth() >= characters[1].getX()) {	// Si le Spell est plus à droite que le Character
-					spellTouchCharacter(1, spell);
-				}
-			} else {	// Si le Spell va vers la gauche
-				if (characters[0].getX() + characters[0].getSpriteWidth() >= spell.getX()) {	// Si le Spell est plus à gauche que le Character
-					spellTouchCharacter(0, spell);
-				}
-			}	
-		}
+		characters[0].getSpells().removeAll(spellsToRemove1);
+		characters[1].getSpells().removeAll(spellsToRemove2);
 	}
 	
 	public void spellTouchCharacter(int i, Spell spell) {
 		characters[i].takeDamage(spell.getDamageToDo());	// Inflige les dégâts au Character
-		spells.remove(spell);	//Retire le Spell
 	}
 
 	public void render(GameContainer container, StateBasedGame game, Graphics context) {
@@ -126,10 +128,7 @@ public class Duel extends BasicGameState {
 		for (Character character: this.characters) {
 			character.render(container, game, context);
 		}
-		
-		for (Spell spell : spells) {
-			spell.render(container, game, context);
-		}
+
 	}
 
 	public void keyPressed(int key, char value) {
@@ -145,7 +144,6 @@ public class Duel extends BasicGameState {
 		boolean sideBoolean = side==1? true : false;
 		this.characters[side] = new Player("JOUEUR",1000,this, sideBoolean);
 		this.characters[1 - side] = new AI("Deep Neural Network", 1000,this, !sideBoolean);
-		this.spells = new ArrayList<>(2);
 		
 		//Partie statistiques :
 		this.failures.clear();
@@ -174,15 +172,7 @@ public class Duel extends BasicGameState {
 
 	public void characterDied(boolean side) {
 		//TODO : indiquer la fin du duel
-	}
-
-	public void launchSpell(int x, int y, boolean side, int star, int damage) {
-		Spell spell = new Spell(x, y, side, star, damage);
-		int index = 0;		// Index par défaut (s'il n'y a pas encore de Spell dans spells)
-		if (spells.size() > 0) {	// Il y a déjà un Spell
-			index = side? 1 : 0;	// Alors on calcul l'index où mettre le Spell en fonction de son side
-		}
-		spells.add(index, spell);
+		System.out.println("Dueliste n°" + side + "est mort !");
 	}
 
 }

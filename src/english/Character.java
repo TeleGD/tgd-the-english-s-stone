@@ -8,6 +8,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import app.ui.TextField;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Character extends Entity {
 
@@ -22,6 +23,7 @@ public abstract class Character extends Entity {
 	private Duel duel;
 	private Exercise exercise;
 	private ArrayList<Entity> stars;
+	private List<Spell> spells;
 	private HealthBar healthBar;
 
 	public Character(String spritePath, String name, int HPmax, Duel duel, boolean side) {
@@ -33,6 +35,7 @@ public abstract class Character extends Entity {
 		this.side = side;
 		this.starMax = 3;
 		this.stars = new ArrayList<>();
+		this.spells = new ArrayList<>();
 		this.healthBar = new HealthBar(side? 1280 : 0, 680,1280/2,40,HPmax,side);
 		this.damage = 40;
 
@@ -50,6 +53,9 @@ public abstract class Character extends Entity {
 	
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 		super.update(container, game, delta);	// Update d'Entity
+		for (Spell spell : spells){
+			spell.update(container, game, delta);
+		}
 	}
 
 	public void render(GameContainer container, StateBasedGame game, Graphics context) {
@@ -57,6 +63,11 @@ public abstract class Character extends Entity {
 		for (Entity star : stars){  // Render des étoiles
 			star.render(container,game,context);
 		}
+
+		for (Spell spell : spells){
+			spell.render(container, game, context);
+		}
+
 		healthBar.render(container,game,context);   // Render de la barre de HP
 		// Affichage textuel des HP :
 		context.setColor(Color.white);
@@ -83,7 +94,7 @@ public abstract class Character extends Entity {
 	}
 	
 	public void launchSpell() {
-		duel.launchSpell(this.getX(),this.getY(),side,stars.size(), damage);  // Faire partir le sort de la main du Character, plutôt que depuis sa position
+		spells.add(new Spell(this.getX(),this.getY(),side,stars.size(), damage));
 	}
 	
 	public boolean checkAnswer() {
@@ -101,4 +112,11 @@ public abstract class Character extends Entity {
 
 	public void keyPressed(int key, char value) {}
 
+	public List<Spell> getSpells() {
+		return spells;
+	}
+
+	public void removeSpell(Spell spell){
+		spells.remove(spell);
+	}
 }

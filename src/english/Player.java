@@ -13,6 +13,7 @@ public class Player extends Character {
 	}
 
 	public void update(GameContainer container, StateBasedGame game, int delta) {
+		super.update(container, game, delta);
 		Input input = container.getInput ();
 		if (input.isKeyPressed (Input.KEY_RETURN)) { //TODO : retirer cet Input de debug
 			launchSpell();
