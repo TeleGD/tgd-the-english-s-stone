@@ -33,15 +33,15 @@ public class HealthBar {
 		this.maxHP = maxHP;
 		this.flipped = flipped;
 
-		this.textOffset = 100;
-		this.yText = y0 - height/3;
+		this.textOffset = 40;
+		this.yText = y0 + height/2 - textFont.getHeight("HP")/2;
 
 
 		this.currentHP = maxHP;
 
 		if (flipped){
 			realX = x0 - width; // Décalage de l'origine en cas de symétrie horizontale
-			this.xText = x0 - textOffset;
+			this.xText = x0 - textOffset - textFont.getWidth("HP : " + maxHP + " / " + maxHP);
 		} else{
 			this.xText = x0 + textOffset;
 		}

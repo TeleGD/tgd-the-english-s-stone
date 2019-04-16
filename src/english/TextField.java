@@ -57,19 +57,19 @@ public class TextField {
 		int halfBorderWidth = borderWidth / 2;
 		int padding = this.padding;
 		context.setColor(this.backgroundColor);
-		context.fillRoundRect(this.x + halfBorderWidth, this.y + halfBorderWidth, this.width - borderWidth, this.height - borderWidth, this.cornerRadius - halfBorderWidth);
+		context.fillRoundRect((this.x + halfBorderWidth) * Duel.xRatio, (this.y + halfBorderWidth) * Duel.yRatio, (this.width - borderWidth) * Duel.xRatio, (this.height - borderWidth) * Duel.yRatio, (int) ((this.cornerRadius - halfBorderWidth) * Duel.xRatio));
 		context.setColor(this.borderColor);
 		context.setLineWidth(this.borderWidth);
-		context.drawRoundRect(this.x + halfBorderWidth, this.y + halfBorderWidth, this.width - borderWidth, this.height - borderWidth, this.cornerRadius - halfBorderWidth);
+		context.drawRoundRect((this.x + halfBorderWidth) * Duel.xRatio, (this.y + halfBorderWidth) * Duel.yRatio, (this.width - borderWidth) * Duel.xRatio, (this.height - borderWidth) * Duel.yRatio, (int) ((this.cornerRadius - halfBorderWidth) * Duel.xRatio));
 		context.setColor(this.textColor);
 		context.setFont(this.font);
-		context.drawString(this.text, this.x + borderWidth + padding, this.y + borderWidth + padding);
+		context.drawString(this.text, (int) ((this.x + borderWidth + padding) * Duel.xRatio), (int) ((this.y + borderWidth + padding) * Duel.yRatio));
 		if (this.caretBlinkCountdown >= this.caretBlinkPeriod / 2) {
 			int x = this.x + borderWidth + padding + this.font.getWidth(text.substring(0, this.caret));
 			int y1 = this.y + borderWidth + padding;
 			int y2 = y1 + this.line;
 			context.setColor(caretColor);
-			context.drawLine(x, y1, x, y2);
+			context.drawLine(x * Duel.xRatio, y1 * Duel.yRatio, x * Duel.xRatio, y2 * Duel.yRatio);
 		}
 	}
 

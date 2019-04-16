@@ -49,14 +49,16 @@ public abstract class Character extends Entity {
 		this.textField = new TextField(200 + (side ? 640 : 0), 240, 400, 40, 10, 2);
 		this.yName = 640;
 		this.timeAnimRemainingMax = 500;
+
+		int sizeOfName = textFont.getWidth(name);
 		if(!side) {	//TODO : changer les positions des joueurs
 			this.setX(80);
 			this.setY(440);
-			this.xName = 80;
+			this.xName = 80 + 480/2 - sizeOfName/2; // Centrage du nom
 		} else {
 			this.setX(1120);
 			this.setY(440);
-			this.xName = 720;
+			this.xName = 720 + 480/2 - sizeOfName/2; // Centrage du nom
 		}
 	}
 
