@@ -96,8 +96,7 @@ public abstract class Character extends Entity {
 		// Affichage textuel des HP :
 		context.setFont(textFont);
 		context.setColor(Color.white);
-		context.drawString(name, xName, yName);
-
+		context.drawString(name, xName * Duel.xRatio, yName * Duel.yRatio);
 	}
 
 	public void takeDamage(int damageDone) {    // En l'état, prendre des dégats annule le lancer de sort en cours

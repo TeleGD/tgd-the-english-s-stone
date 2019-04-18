@@ -8,11 +8,8 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.state.transition.FadeInTransition;
-import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import app.AppLoader;
 
@@ -20,6 +17,9 @@ public class Duel extends BasicGameState {
 
 	static private Random RNG;
 	static private Font font;
+	static public float xRatio;   // Ratio multiplicatif à appliquer aux positionnements en x pour tenir compte de la taille réelle de la fenêtre de jeu
+	static public float yRatio;   // Ratio multiplicatif à appliquer aux positionnements en y pour tenir compte de la taille réelle de la fenêtre de jeu
+
 
 
 
@@ -28,7 +28,6 @@ public class Duel extends BasicGameState {
 		Duel.font = AppLoader.loadFont("/fonts/press-start-2p.ttf", java.awt.Font.BOLD, 40);
 
 	}
-
 	private int ID;
 	private Subject subject;
 	private Chapter chapter;
@@ -46,6 +45,7 @@ public class Duel extends BasicGameState {
 	private int subTitleX;
 	private int subTitleY;
 
+
 	public Duel(int ID) {
 		this.ID = ID;
 		this.characters = new Character[2];
@@ -59,6 +59,8 @@ public class Duel extends BasicGameState {
 
 	public void init(GameContainer container, StateBasedGame game) {
 		/* Méthode exécutée une unique fois au chargement du programme */
+		xRatio = container.getWidth() / 1280f;
+		yRatio = container.getHeight() / 720f;
 	}
 
 	public void enter(GameContainer container, StateBasedGame game) {
@@ -126,10 +128,12 @@ public class Duel extends BasicGameState {
 		/* Méthode exécutée environ 60 fois par seconde */
 		context.setFont(this.titleFont);
 		context.setColor(this.titleColor);
-		context.drawString(this.title, this.titleX, this.titleY);
+		context.drawString(this.title, this.titleX * Duel.xRatio, this.titleY * Duel.yRatio);
+
 		context.setFont(this.subTitleFont);
 		context.setColor(this.subTitleColor);
-		context.drawString(this.subTitle, this.subTitleX, this.subTitleY);
+		context.drawString(this.subTitle, this.subTitleX * Duel.xRatio, this.subTitleY * Duel.yRatio);
+
 		for (Character character: this.characters) {
 			character.render(container, game, context);
 		}

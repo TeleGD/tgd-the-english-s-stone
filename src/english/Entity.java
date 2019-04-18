@@ -58,7 +58,7 @@ public abstract class Entity {
 	}
 
 	public void renderSprite(GameContainer container, StateBasedGame game, Graphics context, int animLine) {
-		context.drawAnimation(animations[animLine], this.x, this.y);    //TODO : vérifier qu'il n'y a pas de décalage x y
+		context.drawAnimation(animations[animLine], this.x * Duel.xRatio, this.y * Duel.yRatio);    //TODO : vérifier qu'il n'y a pas de décalage x y
 	}
 
 	public int getX() {
@@ -105,7 +105,7 @@ public abstract class Entity {
 	public void loadAnimation(SpriteSheet spriteSheet, int startX, int endX, int animLineToLoad, int animLineToStore) {
 		Animation animation = new Animation();
 		for (int x = startX; x < endX; x++) {
-			animation.addFrame(spriteSheet.getSprite(x, animLineToLoad).getScaledCopy(spriteWidth, spriteHeight).getFlippedCopy(side, false), 100);
+			animation.addFrame(spriteSheet.getSprite(x, animLineToLoad).getScaledCopy((int) (spriteWidth * Duel.xRatio), (int) (spriteHeight * Duel.yRatio)).getFlippedCopy(side, false), 100);
 		}
 		animations[animLineToStore] = animation;
 	}

@@ -62,15 +62,15 @@ public class HealthBar {
 		}
 		// Fond de la barre de vie :
 		context.setColor(Color.gray);
-		context.fillRect(realX, y0, width, height);
+		context.fillRect(realX * Duel.xRatio, y0 * Duel.yRatio, width * Duel.xRatio, height  * Duel.yRatio);
 
 		// Partie verte de la barre de vie
 		context.setColor(Color.green);
-		context.fillRect(x0Bar, y0, (int)(width*(double)(currentHP)/maxHP), height);
+		context.fillRect(x0Bar * Duel.xRatio, y0 * Duel.yRatio, (int)(width*(double)(currentHP)/maxHP) * Duel.xRatio, height * Duel.yRatio);
 
 		// Affichage textuel des HP :
 		context.setFont(textFont);
 		context.setColor(Color.white);
-		context.drawString("HP : "+ currentHP +" / " + maxHP, xText, yText);
+		context.drawString("HP : "+ currentHP +" / " + maxHP, xText * Duel.xRatio, yText * Duel.yRatio);
 	}
 }
