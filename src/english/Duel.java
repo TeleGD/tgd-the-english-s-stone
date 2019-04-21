@@ -15,20 +15,9 @@ import app.AppLoader;
 
 public class Duel extends BasicGameState {
 
-	static private Random RNG;
-	static private Font font;
-	static public float xRatio;   // Ratio multiplicatif à appliquer aux positionnements en x pour tenir compte de la taille réelle de la fenêtre de jeu
-	static public float yRatio;   // Ratio multiplicatif à appliquer aux positionnements en y pour tenir compte de la taille réelle de la fenêtre de jeu
 
-
-
-
-	static {
-		Duel.RNG = new Random();
-		Duel.font = AppLoader.loadFont("/fonts/press-start-2p.ttf", java.awt.Font.BOLD, 40);
-
-	}
 	private int ID;
+	private float aspectRatio;   // Ratio multiplicatif à appliquer aux positionnements pour tenir compte de la taille réelle de la fenêtre de jeu
 	private Subject subject;
 	private Chapter chapter;
 	private Character[] characters;
@@ -44,13 +33,11 @@ public class Duel extends BasicGameState {
 	private Color subTitleColor;
 	private int subTitleX;
 	private int subTitleY;
+	private Random RNG;
 
 
 	public Duel(int ID) {
 		this.ID = ID;
-		this.characters = new Character[2];
-		this.failures = new ArrayList<Integer>();
-		this.durations = new ArrayList<Integer>();
 	}
 
 	public int getID() {
@@ -59,8 +46,6 @@ public class Duel extends BasicGameState {
 
 	public void init(GameContainer container, StateBasedGame game) {
 		/* Méthode exécutée une unique fois au chargement du programme */
-		xRatio = container.getWidth() / 1280f;
-		yRatio = container.getHeight() / 720f;
 	}
 
 	public void enter(GameContainer container, StateBasedGame game) {
@@ -128,11 +113,11 @@ public class Duel extends BasicGameState {
 		/* Méthode exécutée environ 60 fois par seconde */
 		context.setFont(this.titleFont);
 		context.setColor(this.titleColor);
-		context.drawString(this.title, this.titleX * Duel.xRatio, this.titleY * Duel.yRatio);
+		context.drawString(this.title, this.titleX * this.aspectRatio, this.titleY * this.aspectRatio);
 
 		context.setFont(this.subTitleFont);
 		context.setColor(this.subTitleColor);
-		context.drawString(this.subTitle, this.subTitleX * Duel.xRatio, this.subTitleY * Duel.yRatio);
+		context.drawString(this.subTitle, this.subTitleX * this.aspectRatio, this.subTitleY * this.aspectRatio);
 
 		for (Character character: this.characters) {
 			character.render(container, game, context);
@@ -148,30 +133,33 @@ public class Duel extends BasicGameState {
 
 	public void start(GameContainer container, Subject subject, int index) {
 		container.getInput().enableKeyRepeat();
+		this.aspectRatio = Math.min(container.getWidth() / 1280f, container.getHeight() / 720f);
+		//Partie statistiques :
+		this.failures = new ArrayList<Integer>();
+		this.durations = new ArrayList<Integer>();
+		this.RNG = new Random();
 		// Partie Character et Spell :
 //		int side = Duel.RNG.nextInt(2);
+		this.characters = new Character[2];
 		int side = 1;
 		boolean sideBoolean = side==1? true : false;
-		this.characters[side] = new Player("JOUEUR",1000,this, sideBoolean);
-		this.characters[1 - side] = new AI("Deep Neural Network", 1000,this, !sideBoolean);
-
-		//Partie statistiques :
-		this.failures.clear();
-		this.durations.clear();
+		this.characters[side] = new Player(this.aspectRatio, "JOUEUR",1000,this, sideBoolean);
+		this.characters[1 - side] = new AI(this.aspectRatio, "Deep Neural Network", 1000,this, !sideBoolean);
+		Font font = AppLoader.loadFont("/fonts/press-start-2p.ttf", java.awt.Font.BOLD, (int) (40 * this.aspectRatio));
 
 		// Partie affichage chapitre et sujet :
 		this.subject = subject;
 		this.chapter = subject.getChapter(index);
 		this.title = "Subject: " + this.subject.getName();
 		this.subTitle = "Chapter: " + this.chapter.getName();
-		this.titleFont = Duel.font;
+		this.titleFont = font;
 		this.titleColor = Color.white;
-		this.titleX = 640 - this.titleFont.getWidth(title) / 2;
-		this.titleY = 60 - this.titleFont.getHeight(title) / 2;
-		this.subTitleFont = Duel.font;
+		this.titleX = 640 - (int) (this.titleFont.getWidth(title) / this.aspectRatio) / 2;
+		this.titleY = 60 - (int) (this.titleFont.getHeight(title) / this.aspectRatio) / 2;
+		this.subTitleFont = font;
 		this.subTitleColor = Color.white;
-		this.subTitleX = 640 - this.subTitleFont.getWidth(subTitle) / 2;
-		this.subTitleY = 100 - this.subTitleFont.getHeight(subTitle) / 2;
+		this.subTitleX = 640 - (int) (this.subTitleFont.getWidth(subTitle) / this.aspectRatio) / 2;
+		this.subTitleY = 100 - (int) (this.subTitleFont.getHeight(subTitle) / this.aspectRatio) / 2;
 
 		for(Character character: characters) { // TODO: remplacer cette attribution de base
 			character.setexercise(new Exercise("Conjugate \"have\" at...", "has"));
@@ -179,7 +167,7 @@ public class Duel extends BasicGameState {
 	}
 
 	public void end(GameContainer container) {
-		container.getInput().enableKeyRepeat();
+		container.getInput().disableKeyRepeat();
 	}
 
 	public void characterDied(boolean side) {

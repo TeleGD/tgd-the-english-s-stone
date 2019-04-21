@@ -10,12 +10,12 @@ public class Spell extends Entity {
 	private int star;
 	private int damage;
 
-	public Spell(int x, int y, boolean side, int star, int damage) {
-		super("/images/spell/spritesheetSpell.png",100,100,124,108,3, x, y, (side? -1 : 1)* 5, side );
+	public Spell(float aspectRatio, int x, int y, boolean side, int star, int damage) {
+		super(aspectRatio, "/images/spell/spritesheetSpell.png",100,100,124,108,3, x, y, (side? -1 : 1)* 5, side );
 		this.star = star;
 		this.damage = damage;
 	}
-	
+
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 		super.update(container, game, delta);
 		//TODO : check de colision avec un Character ou un autre Spell
@@ -49,7 +49,7 @@ public class Spell extends Entity {
 		}
 		return star;
 	}
-	
+
 	public int getStar() {
 		return star;
 	}

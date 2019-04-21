@@ -9,6 +9,7 @@ import java.util.List;
 
 public abstract class Character extends Entity {
 
+	private float aspectRatio;
 	private String name;
 	private int HPmax;
 	private int HPcount;
@@ -29,14 +30,15 @@ public abstract class Character extends Entity {
 	* 1 : impact
 	* 2 : launch spell
 	* 3 : death */
-	private int state = 0;
+	private int state;
 	private float timeAnimRemaining;    // Temps avant réinitialisation de l'animation
 
-	public static final Font textFont = AppLoader.loadFont("/fonts/vt323.ttf", java.awt.Font.BOLD, 30);
+	private Font textFont;
 
 
-	public Character(String spritePath, String name, int HPmax, Duel duel, boolean side) {
-		super(spritePath,16*5,32*5,32, 32,4, 0, 0, 0, side);
+	public Character(float aspectRatio, String spritePath, String name, int HPmax, Duel duel, boolean side) {
+		super(aspectRatio, spritePath,16*5,32*5,32, 32,4, 0, 0, 0, side);
+		this.aspectRatio = aspectRatio;
 		this.name = name;
 		this.HPmax = HPmax;
 		this.HPcount = HPmax;
@@ -44,13 +46,14 @@ public abstract class Character extends Entity {
 		this.starMax = 3;
 		this.stars = new ArrayList<>();
 		this.spells = new ArrayList<>();
-		this.healthBar = new HealthBar(side? 1280 : 0, 680,1280/2,40,HPmax,side);
+		this.healthBar = new HealthBar(aspectRatio, side? 1280 : 0, 680,1280/2,40,HPmax,side);
 		this.damage = 40;
-		this.textField = new TextField(200 + (side ? 640 : 0), 240, 400, 40, 10, 2);
+		this.textField = new TextField(aspectRatio, 200 + (side ? 640 : 0), 240, 400, 40, 10, 2);
 		this.yName = 640;
+		this.state = 0;
 		this.timeAnimRemainingMax = 500;
-
-		int sizeOfName = textFont.getWidth(name);
+		this.textFont = AppLoader.loadFont("/fonts/vt323.ttf", java.awt.Font.BOLD, (int) (30 * aspectRatio));
+		int sizeOfName = (int) (textFont.getWidth(name) / aspectRatio);
 		if(!side) {	//TODO : changer les positions des joueurs
 			this.setX(80);
 			this.setY(440);
@@ -96,7 +99,7 @@ public abstract class Character extends Entity {
 		// Affichage textuel des HP :
 		context.setFont(textFont);
 		context.setColor(Color.white);
-		context.drawString(name, xName * Duel.xRatio, yName * Duel.yRatio);
+		context.drawString(name, xName * this.aspectRatio, yName * this.aspectRatio);
 	}
 
 	public void takeDamage(int damageDone) {    // En l'état, prendre des dégats annule le lancer de sort en cours
@@ -119,7 +122,7 @@ public abstract class Character extends Entity {
 		for (int i = stars.size(); i < starMax; i++){ // On ne remplace que les star qu'il manque
 			int posX = getX() - 40 + 60 * i;
 			int posY = getY() - 40;
-			stars.add(new Star("/images/star.png",40,40, 512, 512, posX,posY,0));
+			stars.add(new Star(this.aspectRatio, "/images/star.png",40,40, 512, 512, posX,posY,0));
 		}
 	}
 
@@ -138,7 +141,7 @@ public abstract class Character extends Entity {
 	 * Lance un sort
 	 */
 	public void launchSpell() {
-		spells.add(new Spell(this.getX(),this.getY(),side,stars.size(), damage));
+		spells.add(new Spell(this.aspectRatio, this.getX(),this.getY(),side,stars.size(), damage));
 	}
 
 	public boolean checkAnswer(String text) {

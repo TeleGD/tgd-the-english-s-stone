@@ -5,11 +5,11 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class AI extends Character {
-	
+
 	private Statistics statistics;
 
-	public AI(String name, int HPmax, Duel duel, boolean side) {
-		super("/images/characters/FierceWizard.png", name, HPmax, duel, side);
+	public AI(float aspectRatio, String name, int HPmax, Duel duel, boolean side) {
+		super(aspectRatio, "/images/characters/FierceWizard.png", name, HPmax, duel, side);
 		// TODO Auto-generated constructor stub
 	}
 

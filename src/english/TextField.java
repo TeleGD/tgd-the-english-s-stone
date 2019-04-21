@@ -10,25 +10,27 @@ import app.AppLoader;
 
 public class TextField {
 
-	int x;
-	int y;
-	int width;
-	int height;
-	int cornerRadius;
-	int borderWidth;
-	int padding;
-	int line;
-	Font font;
-	Color backgroundColor;
-	Color borderColor;
-	Color textColor;
-	Color caretColor;
-	String text;
-	int caretBlinkPeriod;
-	int caretBlinkCountdown;
-	int caret;
+	private float aspectRatio;
+	private int x;
+	private int y;
+	private int width;
+	private int height;
+	private int cornerRadius;
+	private int borderWidth;
+	private int padding;
+	private int line;
+	private Font font;
+	private Color backgroundColor;
+	private Color borderColor;
+	private Color textColor;
+	private Color caretColor;
+	private String text;
+	private int caretBlinkPeriod;
+	private int caretBlinkCountdown;
+	private int caret;
 
-	public TextField(int x, int y, int width, int height, int cornerRadius, int borderWidth) {
+	public TextField(float aspectRatio, int x, int y, int width, int height, int cornerRadius, int borderWidth) {
+		this.aspectRatio = aspectRatio;
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -37,7 +39,7 @@ public class TextField {
 		this.borderWidth = borderWidth;
 		this.padding = (this.height - this.borderWidth * 2) / 10;
 		this.line = (this.height - this.borderWidth * 2) - this.padding;
-		this.font = AppLoader.loadFont("/fonts/vt323.ttf", java.awt.Font.PLAIN, this.line);
+		this.font = AppLoader.loadFont("/fonts/vt323.ttf", java.awt.Font.PLAIN, (int) (this.line * aspectRatio));
 		this.backgroundColor = new Color(1f, 1f, 1f);
 		this.borderColor = new Color(.6f, .6f, .6f);
 		this.textColor = new Color(.2f, .2f, .2f);
@@ -57,19 +59,19 @@ public class TextField {
 		int halfBorderWidth = borderWidth / 2;
 		int padding = this.padding;
 		context.setColor(this.backgroundColor);
-		context.fillRoundRect((this.x + halfBorderWidth) * Duel.xRatio, (this.y + halfBorderWidth) * Duel.yRatio, (this.width - borderWidth) * Duel.xRatio, (this.height - borderWidth) * Duel.yRatio, (int) ((this.cornerRadius - halfBorderWidth) * Duel.xRatio));
+		context.fillRoundRect((this.x + halfBorderWidth) * this.aspectRatio, (this.y + halfBorderWidth) * this.aspectRatio, (this.width - borderWidth) * this.aspectRatio, (this.height - borderWidth) * this.aspectRatio, (int) ((this.cornerRadius - halfBorderWidth) * this.aspectRatio));
 		context.setColor(this.borderColor);
 		context.setLineWidth(this.borderWidth);
-		context.drawRoundRect((this.x + halfBorderWidth) * Duel.xRatio, (this.y + halfBorderWidth) * Duel.yRatio, (this.width - borderWidth) * Duel.xRatio, (this.height - borderWidth) * Duel.yRatio, (int) ((this.cornerRadius - halfBorderWidth) * Duel.xRatio));
+		context.drawRoundRect((this.x + halfBorderWidth) * this.aspectRatio, (this.y + halfBorderWidth) * this.aspectRatio, (this.width - borderWidth) * this.aspectRatio, (this.height - borderWidth) * this.aspectRatio, (int) ((this.cornerRadius - halfBorderWidth) * this.aspectRatio));
 		context.setColor(this.textColor);
 		context.setFont(this.font);
-		context.drawString(this.text, (int) ((this.x + borderWidth + padding) * Duel.xRatio), (int) ((this.y + borderWidth + padding) * Duel.yRatio));
+		context.drawString(this.text, (int) ((this.x + borderWidth + padding) * this.aspectRatio), (int) ((this.y + borderWidth + padding) * this.aspectRatio));
 		if (this.caretBlinkCountdown >= this.caretBlinkPeriod / 2) {
-			int x = this.x + borderWidth + padding + this.font.getWidth(text.substring(0, this.caret));
+			int x = this.x + borderWidth + padding + (int) (this.font.getWidth(text.substring(0, this.caret)) / this.aspectRatio);
 			int y1 = this.y + borderWidth + padding;
 			int y2 = y1 + this.line;
 			context.setColor(caretColor);
-			context.drawLine(x * Duel.xRatio, y1 * Duel.yRatio, x * Duel.xRatio, y2 * Duel.yRatio);
+			context.drawLine(x * this.aspectRatio, y1 * this.aspectRatio, x * this.aspectRatio, y2 * this.aspectRatio);
 		}
 	}
 

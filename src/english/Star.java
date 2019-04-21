@@ -4,8 +4,8 @@ import org.newdawn.slick.SpriteSheet;
 
 public class Star extends Entity{
 
-	public Star(String spritePath, int spriteWidth, int spriteHeight, int spriteNaturalWidth, int spriteNaturalHeight, int x, int y, int dx){
-		super(spritePath, spriteWidth, spriteHeight, spriteNaturalWidth, spriteNaturalHeight, 1, x, y, dx, false);
+	public Star(Float aspectRatio, String spritePath, int spriteWidth, int spriteHeight, int spriteNaturalWidth, int spriteNaturalHeight, int x, int y, int dx){
+		super(aspectRatio, spritePath, spriteWidth, spriteHeight, spriteNaturalWidth, spriteNaturalHeight, 1, x, y, dx, false);
 	}
 
 	@Override
