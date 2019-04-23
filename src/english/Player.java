@@ -7,18 +7,36 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class Player extends Character {
 
+	private int freezeCountdown;
+	private Duel duel;
+
 	public Player(float aspectRatio, String name, int HPmax, Duel duel, boolean side) {
 		super(aspectRatio, "/images/characters/YoungWizard.png", name, HPmax, duel, side);
+		this.freezeCountdown = 4000;
+		this.duel = duel;
 		// TODO Auto-generated constructor stub
 	}
 
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 		super.update(container, game, delta);
 		TextField textField = this.getTextField();
-		textField.update(container, game, delta);
+		if (this.isAnswerShown()) {
+			if (this.freezeCountdown <= 0) {
+				this.freezeCountdown = 4000;
+				this.hideAnswer();
+				this.setExercise(this.duel.requestExercise(side));
+			} else {
+				this.freezeCountdown -= delta;
+			}
+		} else {
+			textField.update(container, game, delta);
+		}
 	}
 
 	public void keyPressed(int key, char value) {
+		if (this.isAnswerShown()) {
+			return;
+		}
 		TextField textField = this.getTextField();
 		String text = textField.getText();
 		int caret = textField.getCaret();
@@ -38,6 +56,10 @@ public class Player extends Character {
 					textField.setCaret(0);
 					this.castSpell();
 					System.out.println("Joueur : Je lance un sort !");
+				} else if (this.getStarCount() == 0) {
+					textField.setText("");
+					textField.setCaret(0);
+					this.showAnswer();
 				}
 				return;
 			}
@@ -77,6 +99,10 @@ public class Player extends Character {
 				textField.setCaret(caret + 1);
 			}
 		}
+	}
+
+	public Statistics getStatistics() {
+		return new Statistics(this.getDurations()/*, ... */);
 	}
 
 }

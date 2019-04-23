@@ -15,6 +15,7 @@ import app.elements.MenuItem;
 import english.Chapter;
 import english.Duel;
 import english.Exercise;
+import english.Statistics;
 import english.Subject;
 
 public class Choice extends AppMenu {
@@ -33,7 +34,7 @@ public class Choice extends AppMenu {
 					Exercise exercise = new Exercise("Conjugate \"be\" at...", "is");
 					List<Exercise> exercises = new ArrayList<Exercise>();
 					exercises.add(exercise);
-					Chapter chapter = new Chapter("Irregular verbs", "", null, exercises);
+					Chapter chapter = new Chapter("Irregular verbs", "", new Statistics(), exercises);
 					List<Chapter> chapters = new ArrayList<Chapter>();
 					chapters.add(chapter);
 					Subject subject = new Subject("Conjugaison", "", chapters);

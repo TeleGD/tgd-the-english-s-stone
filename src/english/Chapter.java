@@ -28,4 +28,12 @@ public class Chapter {
 		return this.exercises.size();
 	}
 
+	public Statistics getStatistics() {
+		return this.statistics;
+	}
+
+	public void setStatistics(Statistics statistics) {
+		this.statistics = statistics;
+	}
+
 }

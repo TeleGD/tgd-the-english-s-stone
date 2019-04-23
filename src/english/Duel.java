@@ -138,18 +138,18 @@ public class Duel extends BasicGameState {
 		this.failures = new ArrayList<Integer>();
 		this.durations = new ArrayList<Integer>();
 		this.RNG = new Random();
+		this.subject = subject;
+		this.chapter = subject.getChapter(index);
 		// Partie Character et Spell :
 //		int side = Duel.RNG.nextInt(2);
 		this.characters = new Character[2];
 		int side = 1;
 		boolean sideBoolean = side==1? true : false;
 		this.characters[side] = new Player(this.aspectRatio, "JOUEUR",1000,this, sideBoolean);
-		this.characters[1 - side] = new AI(this.aspectRatio, "Deep Neural Network", 1000,this, !sideBoolean);
+		this.characters[1 - side] = new AI(this.aspectRatio, "Deep Neural Network", 1000,this, !sideBoolean, this.chapter.getStatistics());
 		Font font = AppLoader.loadFont("/fonts/press-start-2p.ttf", java.awt.Font.BOLD, (int) (40 * this.aspectRatio));
 
 		// Partie affichage chapitre et sujet :
-		this.subject = subject;
-		this.chapter = subject.getChapter(index);
 		this.title = "Subject: " + this.subject.getName();
 		this.subTitle = "Chapter: " + this.chapter.getName();
 		this.titleFont = font;
@@ -162,7 +162,7 @@ public class Duel extends BasicGameState {
 		this.subTitleY = 100 - (int) (this.subTitleFont.getHeight(subTitle) / this.aspectRatio) / 2;
 
 		for(Character character: characters) { // TODO: remplacer cette attribution de base
-			character.setexercise(new Exercise("Conjugate \"have\" at...", "has"));
+			character.setExercise(new Exercise("Conjugate \"have\" at...", "has"));
 		}
 	}
 
@@ -170,7 +170,17 @@ public class Duel extends BasicGameState {
 		container.getInput().disableKeyRepeat();
 	}
 
+	public Exercise requestExercise(boolean side) {
+		return new Exercise("Conjugate \"have\" at...", "has");
+	}
+
 	public void characterDied(boolean side) {
+		if (characters[side ? 1 : 0] instanceof AI) {
+			Player player = ((Player) characters[side ? 0 : 1]);
+			player.resetDuration();
+			this.chapter.setStatistics(player.getStatistics());
+			// TODO enregistrer ces statistiques dans le chapitre en cours
+		}
 		//TODO : indiquer la fin du duel
 		System.out.println("Dueliste n°" + side + "est mort !");
 	}

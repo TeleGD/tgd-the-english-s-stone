@@ -34,6 +34,9 @@ public abstract class Character extends Entity {
 	private float timeAnimRemaining;    // Temps avant réinitialisation de l'animation
 
 	private Font textFont;
+	private List<Integer> previousDurations;
+	private int currentDuration;
+	private boolean isAnswerShown;
 
 
 	public Character(float aspectRatio, String spritePath, String name, int HPmax, Duel duel, boolean side) {
@@ -54,6 +57,9 @@ public abstract class Character extends Entity {
 		this.timeAnimRemainingMax = 500;
 		this.textFont = AppLoader.loadFont("/fonts/vt323.ttf", java.awt.Font.BOLD, (int) (30 * aspectRatio));
 		int sizeOfName = (int) (textFont.getWidth(name) / aspectRatio);
+		this.previousDurations = new ArrayList<Integer>();
+		this.currentDuration = 0;
+		this.isAnswerShown = false;
 		if(!side) {	//TODO : changer les positions des joueurs
 			this.setX(80);
 			this.setY(440);
@@ -67,6 +73,7 @@ public abstract class Character extends Entity {
 
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 		super.update(container, game, delta);	// Update d'Entity
+		this.currentDuration += delta;
 		for (Spell spell : spells){
 			spell.update(container, game, delta);
 		}
@@ -81,7 +88,6 @@ public abstract class Character extends Entity {
 				timeAnimRemaining = 0;
 			}
 		}
-
 	}
 
 	public void render(GameContainer container, StateBasedGame game, Graphics context) {
@@ -117,13 +123,19 @@ public abstract class Character extends Entity {
 
 	}
 
-	public void setexercise(Exercise exercise) {
+	public void setExercise(Exercise exercise) {
 		this.exercise = exercise;
+		this.resetDuration();
 		for (int i = stars.size(); i < starMax; i++){ // On ne remplace que les star qu'il manque
 			int posX = getX() - 40 + 60 * i;
 			int posY = getY() - 40;
 			stars.add(new Star(this.aspectRatio, "/images/star.png",40,40, 512, 512, posX,posY,0));
 		}
+	}
+
+	public void resetDuration() {
+		this.previousDurations.add(this.currentDuration);
+		this.currentDuration = 0;
 	}
 
 	/**
@@ -135,6 +147,7 @@ public abstract class Character extends Entity {
 		}
 		timeAnimRemaining = timeAnimRemainingMax;
 		state = 2;
+		this.setExercise(this.duel.requestExercise(side));
 	}
 
 	/**
@@ -181,4 +194,25 @@ public abstract class Character extends Entity {
 		// Ligne 2 : launch spell
 		// Ligne 3 : death
 	}
+
+	public void hideAnswer() {
+		this.isAnswerShown = false;
+	}
+
+	public void showAnswer() {
+		this.isAnswerShown = true;
+	}
+
+	public boolean isAnswerShown() {
+		return this.isAnswerShown;
+	}
+
+	public int getStarCount() {
+		return this.stars.size();
+	}
+
+	public List<Integer> getDurations() {
+		return this.previousDurations;
+	}
+
 }

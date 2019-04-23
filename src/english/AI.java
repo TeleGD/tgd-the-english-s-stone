@@ -8,8 +8,10 @@ public class AI extends Character {
 
 	private Statistics statistics;
 
-	public AI(float aspectRatio, String name, int HPmax, Duel duel, boolean side) {
+	public AI(float aspectRatio, String name, int HPmax, Duel duel, boolean side, Statistics statistics) {
 		super(aspectRatio, "/images/characters/FierceWizard.png", name, HPmax, duel, side);
+		this.statistics = statistics;
+		this.showAnswer();
 		// TODO Auto-generated constructor stub
 	}
 
