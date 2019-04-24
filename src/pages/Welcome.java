@@ -27,7 +27,8 @@ public class Welcome extends AppPage {
 	private int logoNaturalWidth;
 	private int logoNaturalHeight;
 
-	private Font gameNameFont;
+	private Font titleFont;
+	private Color titleColor;
 	private String title;
 
 	public Welcome(int ID) {
@@ -38,13 +39,10 @@ public class Welcome extends AppPage {
 		super.initSize(container, game, 600, 400);
 		super.init(container, game);
 
-		this.hintBoxX = this.contentX;
-		this.hintBoxY = this.contentY;
-
 		this.logoBoxX = this.contentX;
-		this.logoBoxY = this.hintBoxY + this.hintBoxHeight + AppPage.gap;
+		this.logoBoxY = this.subtitleBoxY + this.subtitleBoxHeight + AppPage.gap;
 		this.logoBoxWidth = this.contentWidth;
-		this.logoBoxHeight = this.contentY + this.contentHeight - this.logoBoxY;
+		this.logoBoxHeight = this.hintBoxY - this.logoBoxY - AppPage.gap;
 
 		this.logoVisibility = true;
 
@@ -55,7 +53,8 @@ public class Welcome extends AppPage {
 		this.setHint("PRESS [START]");
 		this.setLogo(AppLoader.loadPicture("/images/logo.png"));
 
-		this.gameNameFont = AppLoader.loadFont("/fonts/HennyPenny-Regular.ttf", java.awt.Font.BOLD, 40);
+		this.titleFont = AppLoader.loadFont("/fonts/HennyPenny-Regular.ttf", java.awt.Font.BOLD, 40);
+		this.titleColor = Color.white;
 		this.title = "The English's stone";
 	}
 
@@ -71,9 +70,10 @@ public class Welcome extends AppPage {
 
 	public void render(GameContainer container, StateBasedGame game, Graphics context) {
 		super.render(container, game, context);
-//		this.renderLogo(container, game, context);
-		context.setFont(gameNameFont);
-		context.drawString(title, logoBoxX+(logoBoxWidth - gameNameFont.getWidth(title))/2,logoBoxY);
+		// this.renderLogo(container, game, context);
+		context.setFont(this.titleFont);
+		context.setColor(this.titleColor);
+		context.drawString(this.title, this.logoBoxX + (this.logoBoxWidth - this.titleFont.getWidth(this.title)) / 2, this.logoBoxY);
 	}
 
 	private void renderLogo(GameContainer container, StateBasedGame game, Graphics context) {
