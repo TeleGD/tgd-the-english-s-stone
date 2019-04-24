@@ -104,6 +104,7 @@ public abstract class Character extends Entity {
 			if (timeAnimRemaining <= 0){
 				if (state == 2){    // Si on est à la fin de l'animation de cast de spell, on lance le spell
 					launchSpell();
+					this.setExercise(this.duel.requestExercise(side));
 				} else if (state == 3){
 					duel.characterDied(side); // Préviens le Duel qu'un joueur est mort
 					game.enterState(2,new FadeOutTransition(), new FadeInTransition());
@@ -208,7 +209,6 @@ public abstract class Character extends Entity {
 		}
 		timeAnimRemaining = timeAnimRemainingMax;
 		state = 2;
-		this.setExercise(this.duel.requestExercise(side));
 	}
 
 	/**
