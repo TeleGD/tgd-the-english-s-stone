@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="32" height="18" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
+ <tileset firstgid="1" source="castle.tsx"/>
+ <layer id="1" name="Calque de Tile 1" width="32" height="18">
+  <data encoding="base64" compression="zlib">
+   eJzlkzEOwCAMA/lCf9B3wue7dKhQzjZ06NAhEoKQ2HHcW2vjjv6IMZ3HdD+Kt+q9uq/60Z85n7CqPIfZ8aDaikuFbadf1Zt4E0/CSjWJi+NIM3b6UY3k3mGnWiv7oOaX7LnThjg53dKdS/bPzUppoXSn2m/8rjRSOTQbpYvKJUzuX+pv59GVmTuOK/2Ud1LNlRdVT+ebhFuy4zsecr6s8Bwfx/nzuACwju/N
+  </data>
+ </layer>
+</map>
