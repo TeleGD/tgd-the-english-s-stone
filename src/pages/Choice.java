@@ -73,7 +73,7 @@ public class Choice extends AppMenu {
 		List<MenuItem> menuItems = new ArrayList<MenuItem>();
 		int i = 4;
 		for (Subject subject: this.subjects) {
-			int j = i;
+			int j = i++;
 			menuItems.add(new MenuItem(subject.getName()) {
 
 				public void itemSelected() {
