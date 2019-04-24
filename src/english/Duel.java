@@ -188,7 +188,7 @@ public class Duel extends BasicGameState {
 	public void characterDied(boolean side) {
 		if (characters[side ? 1 : 0] instanceof AI) {
 			Player player = ((Player) characters[side ? 0 : 1]);
-			player.resetDuration();
+			player.resetFailureAndDuration();
 			this.chapter.setStatistics(player.getStatistics());
 		}
 		//TODO : indiquer la fin du duel

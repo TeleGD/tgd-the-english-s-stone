@@ -101,7 +101,7 @@ public class Player extends Character {
 	}
 
 	public Statistics getStatistics() {
-		return new Statistics(this.getDurations()/*, ... */); // TODO
+		return new Statistics(this.getFailures(), this.getDurations());
 	}
 
 }

@@ -93,9 +93,9 @@ public class Loader {
 					Statistics statistics = chapter.getStatistics();
 					String[] strings = new String[]{
 						Double.toString(statistics.getFailureMean()),
-						Double.toString(statistics.getFailureVariance()),
+						Double.toString(statistics.getFailureDeviation()),
 						Double.toString(statistics.getDurationMean()),
-						Double.toString(statistics.getDurationVariance())
+						Double.toString(statistics.getDurationDeviation())
 					};
 					writer.write(String.join("|", strings) + "\n");
 					for (int j = 0, lj = chapter.getExerciseCount(); j < lj; ++j) {

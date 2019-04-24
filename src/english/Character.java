@@ -40,6 +40,8 @@ public abstract class Character extends Entity {
 	private float timeAnimRemaining;    // Temps avant réinitialisation de l'animation
 
 	private Font textFont;
+	private List<Integer> previousFailures;
+	private int currentFailure;
 	private List<Integer> previousDurations;
 	private int currentDuration;
 	private boolean isAnswerShown;
@@ -66,6 +68,8 @@ public abstract class Character extends Entity {
 		this.timeAnimRemainingMax = 500;
 		this.textFont = AppLoader.loadFont("/fonts/vt323.ttf", java.awt.Font.BOLD, (int) (30 * aspectRatio));
 		int sizeOfName = (int) (textFont.getWidth(name) / aspectRatio);
+		this.previousFailures = new ArrayList<Integer>();
+		this.currentFailure = 0;
 		this.previousDurations = new ArrayList<Integer>();
 		this.currentDuration = 0;
 		this.isAnswerShown = false;
@@ -172,7 +176,7 @@ public abstract class Character extends Entity {
 
 	public void setExercise(Exercise exercise) {
 		this.exercise = exercise;
-		this.resetDuration();
+		this.resetFailureAndDuration();
 		for (int i = stars.size(); i < starMax; i++){ // On ne remplace que les star qu'il manque
 			int posX = getX() - 40 + 60 * i;
 			int posY = getY() - 40;
@@ -184,7 +188,9 @@ public abstract class Character extends Entity {
 		return this.exercise;
 	}
 
-	public void resetDuration() {
+	public void resetFailureAndDuration() {
+		this.previousFailures.add(this.currentFailure);
+		this.currentFailure = 0;
 		this.previousDurations.add(this.currentDuration);
 		this.currentDuration = 0;
 	}
@@ -214,6 +220,7 @@ public abstract class Character extends Entity {
 		} else {  // Retire une étoile
 			if(stars.size() > 0){
 				stars.remove(stars.size()-1);
+				++this.currentFailure;
 			}
 			return false;
 		}
@@ -260,6 +267,10 @@ public abstract class Character extends Entity {
 
 	public int getStarCount() {
 		return this.stars.size();
+	}
+
+	public List<Integer> getFailures() {
+		return this.previousFailures;
 	}
 
 	public List<Integer> getDurations() {
