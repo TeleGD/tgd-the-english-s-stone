@@ -1,9 +1,6 @@
 package pages;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
@@ -30,6 +27,9 @@ public class Welcome extends AppPage {
 	private int logoNaturalWidth;
 	private int logoNaturalHeight;
 
+	private Font gameNameFont;
+	private String title;
+
 	public Welcome(int ID) {
 		super(ID);
 	}
@@ -54,6 +54,9 @@ public class Welcome extends AppPage {
 
 		this.setHint("PRESS [START]");
 		this.setLogo(AppLoader.loadPicture("/images/logo.png"));
+
+		this.gameNameFont = AppLoader.loadFont("/fonts/HennyPenny-Regular.ttf", java.awt.Font.BOLD, 40);
+		this.title = "The English's stone";
 	}
 
 	public void update(GameContainer container, StateBasedGame game, int  delta) {
@@ -68,7 +71,9 @@ public class Welcome extends AppPage {
 
 	public void render(GameContainer container, StateBasedGame game, Graphics context) {
 		super.render(container, game, context);
-		this.renderLogo(container, game, context);
+//		this.renderLogo(container, game, context);
+		context.setFont(gameNameFont);
+		context.drawString(title, logoBoxX+(logoBoxWidth - gameNameFont.getWidth(title))/2,logoBoxY);
 	}
 
 	private void renderLogo(GameContainer container, StateBasedGame game, Graphics context) {

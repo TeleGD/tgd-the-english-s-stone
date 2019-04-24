@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Font;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import app.AppLoader;
+import org.newdawn.slick.tiled.TiledMap;
 
 public class Duel extends BasicGameState {
 
@@ -35,6 +33,7 @@ public class Duel extends BasicGameState {
 	private int subTitleX;
 	private int subTitleY;
 	private Random RNG;
+	private Image background;
 
 
 	public Duel(int ID) {
@@ -47,6 +46,7 @@ public class Duel extends BasicGameState {
 
 	public void init(GameContainer container, StateBasedGame game) {
 		/* Méthode exécutée une unique fois au chargement du programme */
+		this.background = AppLoader.loadPicture("/images/background.png");
 	}
 
 	public void enter(GameContainer container, StateBasedGame game) {
@@ -112,6 +112,9 @@ public class Duel extends BasicGameState {
 
 	public void render(GameContainer container, StateBasedGame game, Graphics context) {
 		/* Méthode exécutée environ 60 fois par seconde */
+
+		this.background.draw(0,0,container.getWidth(),container.getHeight());
+
 		context.setFont(this.titleFont);
 		context.setColor(this.titleShadow);
 		context.drawString(this.title, (this.titleX - 2) * this.aspectRatio, (this.titleY - 2)  * this.aspectRatio);
