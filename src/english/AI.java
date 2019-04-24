@@ -9,6 +9,8 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import app.AppLoader;
 
+import java.util.Random;
+
 public class AI extends Character {
 
 	static private String[] wrongAnswers;
@@ -34,6 +36,12 @@ public class AI extends Character {
 	private int freezeCountdown;
 	private Duel duel;
 
+	private int nbWrongAnswers;
+	private int timeBeforeNextAnswer;
+	private int minTimeBeforeNextAnswer;
+	private int maxTimeBeforeNextAnswer;
+	private int answerCountdown;
+
 	public AI(float aspectRatio, String name, int HPmax, Duel duel, boolean side, Statistics statistics) {
 		super(aspectRatio, "/images/characters/FierceWizard.png", name, HPmax, duel, side);
 		this.statistics = statistics;
@@ -45,6 +53,10 @@ public class AI extends Character {
 		this.duel = duel;
 		this.showAnswer();
 		this.getTextField().setText("???");
+
+		this.minTimeBeforeNextAnswer = 3000;
+		this.maxTimeBeforeNextAnswer = 10000;
+		computeAnswerStats();
 	}
 
 	public void update(GameContainer container, StateBasedGame game, int delta) {
@@ -58,7 +70,18 @@ public class AI extends Character {
 			} else {
 				this.freezeCountdown -= delta;
 			}
+		}else {
+			this.answerCountdown -= delta;
+			if (answerCountdown <= 0){
+				if (nbWrongAnswers <= 0){   // on n'a plus de mauvaise réponse à donner : on donne la bonne
+					this.chooseGoodAnswer();
+				} else{
+					this.chooseWrongAnswer();
+					answerCountdown = timeBeforeNextAnswer; // Relance le countdown
+				}
+			}
 		}
+
 		Input input = container.getInput ();
 		if (input.isKeyPressed (Input.KEY_M)) { //TODO : retirer cet Input de debug
 			this.chooseGoodAnswer();
@@ -67,6 +90,22 @@ public class AI extends Character {
 			this.chooseWrongAnswer();
 			System.out.println("IA : Je lance un sort !");
 		}
+	}
+
+	public void computeAnswerStats(){
+		this.nbWrongAnswers = (int) (statistics.getFailureMean() + duel.getRNG().nextGaussian() * statistics.getFailureDeviation());
+		nbWrongAnswers = Math.max(nbWrongAnswers, 0);
+		nbWrongAnswers = Math.min(nbWrongAnswers, 3);
+
+
+		this.timeBeforeNextAnswer = (int) ((statistics.getDurationMean() + duel.getRNG().nextGaussian() * statistics.getDurationDeviation()) *  1.30); // L'IA laisse une marge de 30% au joueur
+		timeBeforeNextAnswer = Math.max(timeBeforeNextAnswer, minTimeBeforeNextAnswer);
+		timeBeforeNextAnswer = (int) Math.min(timeBeforeNextAnswer, maxTimeBeforeNextAnswer);
+		if (nbWrongAnswers > 0) {
+			timeBeforeNextAnswer /= nbWrongAnswers;
+		}
+
+		answerCountdown = timeBeforeNextAnswer;
 	}
 
 	public void render(GameContainer container, StateBasedGame game, Graphics context) {
@@ -84,15 +123,16 @@ public class AI extends Character {
 	}
 
 	public void chooseGoodAnswer() {
-		if (!this.frozen) {
+		if (!this.frozen && this.HPcount > 0) {
 			TextField textField = this.getTextField();
 			textField.setText("???");
 			this.castSpell();
+			computeAnswerStats();
 		}
 	}
 
 	public void chooseWrongAnswer() {
-		if (!this.frozen) {
+		if (!this.frozen && this.HPcount > 0) {
 			String wrongAnswer = AI.wrongAnswers[this.duel.getRNG().nextInt(AI.wrongAnswers.length)];
 			TextField textField = this.getTextField();
 			this.checkAnswer(wrongAnswer);
@@ -102,6 +142,7 @@ public class AI extends Character {
 			} else {
 				textField.setText(wrongAnswer);
 			}
+			nbWrongAnswers --;
 		}
 	}
 

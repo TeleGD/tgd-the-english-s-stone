@@ -21,7 +21,7 @@ public class Choice extends AppMenu {
 	public Choice(int ID, StateBasedGame game, List<Subject> subjects) {
 		super(ID);
 		this.subjects = subjects;
-		int i = 3;
+		int i = 4;
 		for (Subject subject: this.subjects) {
 			game.addState(new AppMenu(i++) {
 
@@ -71,7 +71,7 @@ public class Choice extends AppMenu {
 		this.setSubtitle("Subjects");
 		this.setHint("SELECT A SUBJECT");
 		List<MenuItem> menuItems = new ArrayList<MenuItem>();
-		int i = 3;
+		int i = 4;
 		for (Subject subject: this.subjects) {
 			int j = i;
 			menuItems.add(new MenuItem(subject.getName()) {

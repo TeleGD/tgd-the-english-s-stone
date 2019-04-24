@@ -10,7 +10,7 @@ public class Statistics {
 	private double durationDeviation;
 
 	public Statistics() {
-		this(0, 0, 0, 0);
+		this(1, 1, 5000, 100);
 	}
 
 	public Statistics(double failureMean, double failureDeviation, double durationMean, double durationDeviation) {

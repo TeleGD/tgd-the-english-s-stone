@@ -3,6 +3,8 @@ package english;
 import app.AppLoader;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +14,7 @@ public abstract class Character extends Entity {
 	private float aspectRatio;
 	private String name;
 	private int HPmax;
-	private int HPcount;
+	protected int HPcount;
 	private int damage;
 	private int starMax;
 	private int xName;
@@ -102,6 +104,9 @@ public abstract class Character extends Entity {
 			if (timeAnimRemaining <= 0){
 				if (state == 2){    // Si on est à la fin de l'animation de cast de spell, on lance le spell
 					launchSpell();
+				} else if (state == 3){
+					duel.characterDied(side); // Préviens le Duel qu'un joueur est mort
+					game.enterState(2,new FadeOutTransition(), new FadeInTransition());
 				}
 				state = 0;
 				timeAnimRemaining = 0;
@@ -165,7 +170,6 @@ public abstract class Character extends Entity {
 			HPcount = 0;
 			timeAnimRemaining = timeAnimRemainingMax;
 			state = 3;  // Lance l'animation de mort
-			duel.characterDied(side); // Préviens le Duel qu'un joueur est mort
 		} else {
 			timeAnimRemaining = timeAnimRemainingMax;
 			state = 1;  // Lance l'animation des dégats

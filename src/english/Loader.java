@@ -47,10 +47,10 @@ public class Loader {
 					}
 					if ((line1 = reader.readLine ()) != null) {
 						double[] doubles = new double[]{
-							0,
-							0,
-							0,
-							0
+							1,
+							1,
+							5000,
+							1000
 						};
 						int i = 0;
 						for (String string: line1.split("|")) {

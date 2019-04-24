@@ -148,7 +148,7 @@ public class Duel extends BasicGameState {
 		// Partie Character et Spell :
 		// int side = this.RNG.nextInt(2);
 		this.characters = new Character[2];
-		int side = 1;
+		int side = 0;
 		boolean sideBoolean = side==1? true : false;
 		this.characters[side] = new Player(this.aspectRatio, "Player",1000,this, sideBoolean);
 		this.characters[1 - side] = new AI(this.aspectRatio, "Deep Neural Network", 1000,this, !sideBoolean, this.chapter.getStatistics());
@@ -186,11 +186,9 @@ public class Duel extends BasicGameState {
 	}
 
 	public void characterDied(boolean side) {
-		if (characters[side ? 1 : 0] instanceof AI) {
-			Player player = ((Player) characters[side ? 0 : 1]);
-			player.resetFailureAndDuration();
-			this.chapter.setStatistics(player.getStatistics());
-		}
+		Player player = ((Player) characters[side ? 0 : 1]);
+		player.resetFailureAndDuration();
+		this.chapter.setStatistics(player.getStatistics());
 		//TODO : indiquer la fin du duel
 		System.out.println("Dueliste n°" + side + "est mort !");
 	}
