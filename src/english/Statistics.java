@@ -10,7 +10,7 @@ public class Statistics {
 	private double durationDeviation;
 
 	public Statistics() {
-		this(1, 1, 5000, 100);
+		this(1, 1, 5000, 3000);
 	}
 
 	public Statistics(double failureMean, double failureDeviation, double durationMean, double durationDeviation) {
@@ -21,22 +21,38 @@ public class Statistics {
 	}
 
 	public Statistics(List<Integer> failures, List<Integer> durations) {
-		this.failureMean = 0;
-		this.failureDeviation = 0;
-		for (int failure: failures) {
-			this.failureMean += failure;
-			this.failureDeviation += failure * failure;
+		if (failures.size() > 0) {
+			this.failureMean = 0;
+			this.failureDeviation = 0;
+			for (int failure: failures) {
+				this.failureMean += failure;
+				this.failureDeviation += failure * failure;
+			}
+			this.failureMean /= failures.size();
+			this.failureDeviation = Math.sqrt(this.failureDeviation / failures.size() - this.failureMean * this.failureMean);
+			if (Double.isNaN(this.failureDeviation)) {
+				this.failureDeviation = 1;
+			}
+		} else {
+			this.failureMean = 1;
+			this.failureDeviation = 1;
 		}
-		this.failureMean /= failures.size();
-		this.failureDeviation = Math.sqrt(this.failureDeviation / failures.size() - this.failureMean * this.failureMean);
-		this.durationMean = 0;
-		this.durationDeviation = 0;
-		for (int duration: durations) {
-			this.durationMean += duration;
-			this.durationDeviation += duration * duration;
+		if (durations.size() > 0) {
+			this.durationMean = 0;
+			this.durationDeviation = 0;
+			for (int duration: durations) {
+				this.durationMean += duration;
+				this.durationDeviation += duration * duration;
+			}
+			this.durationMean /= durations.size();
+			this.durationDeviation = Math.sqrt(this.durationDeviation / durations.size() - this.durationMean * this.durationMean);
+			if (Double.isNaN(this.durationDeviation)) {
+				this.durationDeviation = 3000;
+			}
+		} else {
+			this.durationMean = 5000;
+			this.durationDeviation = 3000;
 		}
-		this.durationMean /= durations.size();
-		this.durationDeviation = Math.sqrt(this.durationDeviation / durations.size() - this.durationMean * this.durationMean);
 	}
 
 	public double getFailureMean() {

@@ -50,7 +50,7 @@ public class Loader {
 							1,
 							1,
 							5000,
-							1000
+							3000
 						};
 						int i = 0;
 						for (String string: line1.split("|")) {
