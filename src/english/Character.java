@@ -133,6 +133,10 @@ public abstract class Character extends Entity {
 		}
 	}
 
+	public Exercise getExercise() {
+		return this.exercise;
+	}
+
 	public void resetDuration() {
 		this.previousDurations.add(this.currentDuration);
 		this.currentDuration = 0;

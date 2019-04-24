@@ -21,8 +21,7 @@ public class Duel extends BasicGameState {
 	private Subject subject;
 	private Chapter chapter;
 	private Character[] characters;
-	private List<Integer> failures;
-	private List<Integer> durations;
+	private int[] exercises;
 	private String title;
 	private String subTitle;
 	private Font titleFont;
@@ -134,22 +133,25 @@ public class Duel extends BasicGameState {
 	public void start(GameContainer container, Subject subject, int index) {
 		container.getInput().enableKeyRepeat();
 		this.aspectRatio = Math.min(container.getWidth() / 1280f, container.getHeight() / 720f);
-		//Partie statistiques :
-		this.failures = new ArrayList<Integer>();
-		this.durations = new ArrayList<Integer>();
 		this.RNG = new Random();
 		this.subject = subject;
 		this.chapter = subject.getChapter(index);
 		// Partie Character et Spell :
-//		int side = Duel.RNG.nextInt(2);
+		// int side = this.RNG.nextInt(2);
 		this.characters = new Character[2];
 		int side = 1;
 		boolean sideBoolean = side==1? true : false;
 		this.characters[side] = new Player(this.aspectRatio, "JOUEUR",1000,this, sideBoolean);
 		this.characters[1 - side] = new AI(this.aspectRatio, "Deep Neural Network", 1000,this, !sideBoolean, this.chapter.getStatistics());
-		Font font = AppLoader.loadFont("/fonts/press-start-2p.ttf", java.awt.Font.BOLD, (int) (40 * this.aspectRatio));
+		this.exercises = new int[]{
+			this.RNG.nextInt(this.chapter.getExerciseCount()),
+			this.RNG.nextInt(this.chapter.getExerciseCount())
+		};
+		this.characters[0].setExercise(this.chapter.getExercise(this.exercises[0]));
+		this.characters[1].setExercise(this.chapter.getExercise(this.exercises[1]));
 
 		// Partie affichage chapitre et sujet :
+		Font font = AppLoader.loadFont("/fonts/press-start-2p.ttf", java.awt.Font.BOLD, (int) (40 * this.aspectRatio));
 		this.title = "Subject: " + this.subject.getName();
 		this.subTitle = "Chapter: " + this.chapter.getName();
 		this.titleFont = font;
@@ -160,10 +162,6 @@ public class Duel extends BasicGameState {
 		this.subTitleColor = Color.white;
 		this.subTitleX = 640 - (int) (this.subTitleFont.getWidth(subTitle) / this.aspectRatio) / 2;
 		this.subTitleY = 100 - (int) (this.subTitleFont.getHeight(subTitle) / this.aspectRatio) / 2;
-
-		for(Character character: characters) { // TODO: remplacer cette attribution de base
-			character.setExercise(new Exercise("Conjugate \"have\" at...", "has"));
-		}
 	}
 
 	public void end(GameContainer container) {
@@ -171,7 +169,9 @@ public class Duel extends BasicGameState {
 	}
 
 	public Exercise requestExercise(boolean side) {
-		return new Exercise("Conjugate \"have\" at...", "has");
+		int index = side ? 1 : 0;
+		this.exercises[index] = (this.exercises[index] + 1) % this.chapter.getExerciseCount();
+		return this.chapter.getExercise(this.exercises[index]);
 	}
 
 	public void characterDied(boolean side) {
@@ -179,7 +179,6 @@ public class Duel extends BasicGameState {
 			Player player = ((Player) characters[side ? 0 : 1]);
 			player.resetDuration();
 			this.chapter.setStatistics(player.getStatistics());
-			// TODO enregistrer ces statistiques dans le chapitre en cours
 		}
 		//TODO : indiquer la fin du duel
 		System.out.println("Dueliste n°" + side + "est mort !");

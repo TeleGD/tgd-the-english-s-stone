@@ -4,16 +4,20 @@ import java.util.List;
 
 public class Chapter {
 
+	private String filename;
 	private String name;
-	private String description;
 	private Statistics statistics;
 	private List<Exercise> exercises;
 
-	public Chapter(String name, String description, Statistics statistics, List<Exercise> exercises) {
+	public Chapter(String filename, String name, Statistics statistics, List<Exercise> exercises) {
+		this.filename = filename;
 		this.name = name;
-		this.description = description;
 		this.statistics = statistics;
 		this.exercises = exercises;
+	}
+
+	public String getFilename() {
+		return this.filename;
 	}
 
 	public String getName() {

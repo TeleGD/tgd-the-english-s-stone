@@ -10,11 +10,11 @@ public class Exercise  {
 		this.answer = answer;
 	}
 
-	public Object getQuestion() {
+	public String getQuestion() {
 		return this.question;
 	}
 
-	public Object getAnswer() {
+	public String getAnswer() {
 		return this.answer;
 	}
 

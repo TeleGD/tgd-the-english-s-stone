@@ -4,14 +4,18 @@ import java.util.List;
 
 public class Subject {
 
+	private String filename;
 	private String name;
-	private String description;
 	private List<Chapter> chapters;
 
-	public Subject(String name, String description, List<Chapter> chapters) {
+	public Subject(String filename, String name, List<Chapter> chapters) {
+		this.filename = filename;
 		this.name = name;
-		this.description = description;
 		this.chapters = chapters;
+	}
+
+	public String getFilename() {
+		return this.filename;
 	}
 
 	public String getName() {

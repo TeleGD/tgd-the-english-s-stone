@@ -52,7 +52,7 @@ public class Welcome extends AppPage {
 		this.subtitleVisibility = false;
 		this.hintBlink = true;
 
-		this.setHint("PRESS[START]");
+		this.setHint("PRESS [START]");
 		this.setLogo(AppLoader.loadPicture("/images/logo.png"));
 	}
 
@@ -62,7 +62,7 @@ public class Welcome extends AppPage {
 		if (input.isKeyDown(Input.KEY_ESCAPE)) {
 			container.exit();
 		} else if (input.isKeyDown(Input.KEY_ENTER)) {
-			game.enterState(1, new FadeOutTransition(), new FadeInTransition());
+			game.enterState(2, new FadeOutTransition(), new FadeInTransition());
 		}
 	}
 
