@@ -26,10 +26,12 @@ public class Duel extends BasicGameState {
 	private String subTitle;
 	private Font titleFont;
 	private Color titleColor;
+	private Color titleShadow;
 	private int titleX;
 	private int titleY;
 	private Font subTitleFont;
 	private Color subTitleColor;
+	private Color subTitleShadow;
 	private int subTitleX;
 	private int subTitleY;
 	private Random RNG;
@@ -111,12 +113,16 @@ public class Duel extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics context) {
 		/* Méthode exécutée environ 60 fois par seconde */
 		context.setFont(this.titleFont);
+		context.setColor(this.titleShadow);
+		context.drawString(this.title, (this.titleX - 2) * this.aspectRatio, (this.titleY - 2)  * this.aspectRatio);
 		context.setColor(this.titleColor);
-		context.drawString(this.title, this.titleX * this.aspectRatio, this.titleY * this.aspectRatio);
+		context.drawString(this.title, (this.titleX + 2) * this.aspectRatio, (this.titleY + 2)  * this.aspectRatio);
 
 		context.setFont(this.subTitleFont);
+		context.setColor(this.subTitleShadow);
+		context.drawString(this.subTitle, (this.subTitleX - 2) * this.aspectRatio, (this.subTitleY - 2) * this.aspectRatio);
 		context.setColor(this.subTitleColor);
-		context.drawString(this.subTitle, this.subTitleX * this.aspectRatio, this.subTitleY * this.aspectRatio);
+		context.drawString(this.subTitle, (this.subTitleX + 2) * this.aspectRatio, (this.subTitleY + 2) * this.aspectRatio);
 
 		for (Character character: this.characters) {
 			character.render(container, game, context);
@@ -141,7 +147,7 @@ public class Duel extends BasicGameState {
 		this.characters = new Character[2];
 		int side = 1;
 		boolean sideBoolean = side==1? true : false;
-		this.characters[side] = new Player(this.aspectRatio, "JOUEUR",1000,this, sideBoolean);
+		this.characters[side] = new Player(this.aspectRatio, "Player",1000,this, sideBoolean);
 		this.characters[1 - side] = new AI(this.aspectRatio, "Deep Neural Network", 1000,this, !sideBoolean, this.chapter.getStatistics());
 		this.exercises = new int[]{
 			this.RNG.nextInt(this.chapter.getExerciseCount()),
@@ -156,10 +162,12 @@ public class Duel extends BasicGameState {
 		this.subTitle = "Chapter: " + this.chapter.getName();
 		this.titleFont = font;
 		this.titleColor = Color.white;
+		this.titleShadow = Color.red;
 		this.titleX = 640 - (int) (this.titleFont.getWidth(title) / this.aspectRatio) / 2;
 		this.titleY = 60 - (int) (this.titleFont.getHeight(title) / this.aspectRatio) / 2;
 		this.subTitleFont = font;
 		this.subTitleColor = Color.white;
+		this.subTitleShadow = Color.red;
 		this.subTitleX = 640 - (int) (this.subTitleFont.getWidth(subTitle) / this.aspectRatio) / 2;
 		this.subTitleY = 100 - (int) (this.subTitleFont.getHeight(subTitle) / this.aspectRatio) / 2;
 	}
@@ -182,6 +190,10 @@ public class Duel extends BasicGameState {
 		}
 		//TODO : indiquer la fin du duel
 		System.out.println("Dueliste n°" + side + "est mort !");
+	}
+
+	public Random getRNG() {
+		return this.RNG;
 	}
 
 }

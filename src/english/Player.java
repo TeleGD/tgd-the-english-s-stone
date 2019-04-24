@@ -14,7 +14,6 @@ public class Player extends Character {
 		super(aspectRatio, "/images/characters/YoungWizard.png", name, HPmax, duel, side);
 		this.freezeCountdown = 4000;
 		this.duel = duel;
-		// TODO Auto-generated constructor stub
 	}
 
 	public void update(GameContainer container, StateBasedGame game, int delta) {
@@ -90,7 +89,7 @@ public class Player extends Character {
 				return;
 			}
 		}
-		if (value > 0) {
+		if (value >= 32) {
 			int length = text.length();
 			if (length < 30) { // MAGIC NUMBER
 				String start = text.substring(0, caret);
@@ -102,7 +101,7 @@ public class Player extends Character {
 	}
 
 	public Statistics getStatistics() {
-		return new Statistics(this.getDurations()/*, ... */);
+		return new Statistics(this.getDurations()/*, ... */); // TODO
 	}
 
 }

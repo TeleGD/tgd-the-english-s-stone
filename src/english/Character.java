@@ -17,6 +17,12 @@ public abstract class Character extends Entity {
 	private int starMax;
 	private int xName;
 	private int yName;
+	private int xQuestion;
+	private int yQuestion;
+	private int xAnswer;
+	private int yAnswer;
+	private int xCorrectAnswer;
+	private int yCorrectAnswer;
 	private TextField textField; //TODO : implémenter un TextField basique
 	private Duel duel;
 	private Exercise exercise;
@@ -53,6 +59,9 @@ public abstract class Character extends Entity {
 		this.damage = 40;
 		this.textField = new TextField(aspectRatio, 200 + (side ? 640 : 0), 240, 400, 40, 10, 2);
 		this.yName = 640;
+		this.yQuestion = 165;
+		this.yAnswer = 245;
+		this.yCorrectAnswer = 285;
 		this.state = 0;
 		this.timeAnimRemainingMax = 500;
 		this.textFont = AppLoader.loadFont("/fonts/vt323.ttf", java.awt.Font.BOLD, (int) (30 * aspectRatio));
@@ -64,10 +73,16 @@ public abstract class Character extends Entity {
 			this.setX(80);
 			this.setY(440);
 			this.xName = 80 + 480/2 - sizeOfName/2; // Centrage du nom
+			this.xQuestion = 40;
+			this.xAnswer = 40;
+			this.xCorrectAnswer = 40;
 		} else {
 			this.setX(1120);
 			this.setY(440);
 			this.xName = 720 + 480/2 - sizeOfName/2; // Centrage du nom
+			this.xQuestion = 680;
+			this.xAnswer = 680;
+			this.xCorrectAnswer = 680;
 		}
 	}
 
@@ -92,6 +107,38 @@ public abstract class Character extends Entity {
 
 	public void render(GameContainer container, StateBasedGame game, Graphics context) {
 		super.render(container, game, context, state);	// Render d'Entity
+		context.setFont(textFont);
+		context.setColor(Color.white);
+		context.drawString("Question:", this.xQuestion * this.aspectRatio, this.yQuestion * this.aspectRatio);
+		String question = this.exercise.getQuestion().replaceAll ("^\\s+|\\s+$", "");
+		if (!question.isEmpty()) {
+			float width = 400 * this.aspectRatio;
+			String[] words = question.split("\\s+");
+			int length = 1;
+			for (int i = 0, j = 1, l = words.length; j < l; j++) {
+				String word = words[i] + " " + words[j];
+				if (this.textFont.getWidth(word) < width) {
+					words[i] = word;
+					words[j] = null;
+				} else {
+					i = j;
+					length++;
+				}
+			}
+			int x = (int) ((this.xQuestion + 160) * this.aspectRatio);
+			int y = (int) ((this.yQuestion - 20 * (length - 1)) * this.aspectRatio);
+			for (int i = 0, j = 0, l = words.length; j < l; j++) {
+				if (words[j] != null) {
+					context.drawString(words[j], x, y + 40 * i);
+					i++;
+				}
+			}
+		}
+		context.drawString("Answer:", this.xAnswer * this.aspectRatio, this.yAnswer * this.aspectRatio);
+		if (this.isAnswerShown) {
+			context.drawString("Expected:", this.xCorrectAnswer * this.aspectRatio, this.yCorrectAnswer * this.aspectRatio);
+			context.drawString("\"" + this.exercise.getAnswer() + "\"", (this.xCorrectAnswer + 160) * this.aspectRatio, this.yCorrectAnswer * this.aspectRatio);
+		}
 		textField.render(container, game, context);
 		for (Entity star : stars){  // Render des étoiles
 			star.render(container,game,context,0);
