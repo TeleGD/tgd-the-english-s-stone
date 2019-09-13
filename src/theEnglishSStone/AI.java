@@ -83,11 +83,11 @@ public class AI extends Character {
 			}
 		}
 
-		Input input = container.getInput ();
-		if (input.isKeyPressed (Input.KEY_M)) { //TODO : retirer cet Input de debug
+		Input input = container.getInput();
+		if (input.isKeyPressed(Input.KEY_M)) { //TODO : retirer cet Input de debug
 			this.chooseGoodAnswer();
 			System.out.println("IA : Je lance un sort !");
-		} else if (input.isKeyPressed (Input.KEY_P)) { //TODO : retirer cet Input de debug
+		} else if (input.isKeyPressed(Input.KEY_P)) { //TODO : retirer cet Input de debug
 			this.chooseWrongAnswer();
 			System.out.println("IA : Je lance un sort !");
 		}

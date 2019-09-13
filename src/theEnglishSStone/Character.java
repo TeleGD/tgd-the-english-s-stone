@@ -126,7 +126,7 @@ public abstract class Character extends Entity {
 		context.setFont(textFont);
 		context.setColor(Color.white);
 		context.drawString("Question:", this.xQuestion * this.aspectRatio, this.yQuestion * this.aspectRatio);
-		String question = this.exercise.getQuestion().replaceAll ("^\\s+|\\s+$", "");
+		String question = this.exercise.getQuestion().replaceAll("^\\s+|\\s+$", "");
 		if (!question.isEmpty()) {
 			float width = 400 * this.aspectRatio;
 			String[] words = question.split("\\s+");

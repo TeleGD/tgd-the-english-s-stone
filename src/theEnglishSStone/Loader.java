@@ -14,11 +14,11 @@ public class Loader {
 	static private String home;
 
 	static {
-		Loader.home = System.getProperty ("user.home") + File.separator + ".the-english-s-stone";
+		Loader.home = System.getProperty("user.home") + File.separator + ".tgd" + File.separator + "the-english-s-stone";
 	}
 
 	static public List<Subject> restore() {
-		File homeFile = new File(home);
+		File homeFile = new File(Loader.home);
 		homeFile.mkdirs();
 		String[] subjectDirectories = homeFile.list((directory, subfile) -> new File(directory, subfile).isDirectory());
 		List<Subject> subjects = new ArrayList<Subject>();
@@ -26,26 +26,26 @@ public class Loader {
 			String subjectName = "No name";
 			List<Chapter> chapters = new ArrayList<Chapter>();
 			try {
-				BufferedReader reader = new BufferedReader(new FileReader(home + File.separator + subjectDirectory + ".txt"));
+				BufferedReader reader = new BufferedReader(new FileReader(Loader.home + File.separator + subjectDirectory + ".txt"));
 				String line;
-				if ((line = reader.readLine ()) != null) {
+				if ((line = reader.readLine()) != null) {
 					subjectName = line;
 				}
-				reader.close ();
+				reader.close();
 			} catch (IOException error) {}
-			String[] chapterFiles = new File(homeFile, subjectDirectory).list ((directory, subfile) -> new File(directory, subfile).isFile());
+			String[] chapterFiles = new File(homeFile, subjectDirectory).list((directory, subfile) -> new File(directory, subfile).isFile());
 			for (String chapterFile: chapterFiles) {
 				String chapterName = "No name";
 				Statistics statistics = new Statistics();
 				List<Exercise> exercices = new ArrayList<Exercise>();
 				try {
-					BufferedReader reader = new BufferedReader(new FileReader(home + File.separator + subjectDirectory + File.separator + chapterFile));
+					BufferedReader reader = new BufferedReader(new FileReader(Loader.home + File.separator + subjectDirectory + File.separator + chapterFile));
 					String line1;
 					String line2;
-					if ((line1 = reader.readLine ()) != null) {
+					if ((line1 = reader.readLine()) != null) {
 						chapterName = line1;
 					}
-					if ((line1 = reader.readLine ()) != null) {
+					if ((line1 = reader.readLine()) != null) {
 						double[] doubles = new double[]{
 							1,
 							1,
@@ -63,10 +63,10 @@ public class Loader {
 						}
 						statistics = new Statistics(doubles[0], doubles[1], doubles[2], doubles[3]);
 					}
-					while ((line1 = reader.readLine ()) != null && (line2 = reader.readLine ()) != null) {
+					while ((line1 = reader.readLine()) != null && (line2 = reader.readLine()) != null) {
 						exercices.add(new Exercise(line1, line2));
 					}
-					reader.close ();
+					reader.close();
 				} catch (IOException error) {}
 				chapters.add(new Chapter(chapterFile, chapterName, statistics, exercices));
 			}
@@ -76,19 +76,19 @@ public class Loader {
 	}
 
 	static public void save(List<Subject> subjects) {
-		File homeFile = new File(home);
+		File homeFile = new File(Loader.home);
 		homeFile.mkdirs();
 		for (Subject subject: subjects) {
 			String subjectDirectory = subject.getFilename();
 			try {
-				BufferedWriter writer = new BufferedWriter(new FileWriter(home + File.separator + subjectDirectory + ".txt"));
+				BufferedWriter writer = new BufferedWriter(new FileWriter(Loader.home + File.separator + subjectDirectory + ".txt"));
 				writer.write(subject.getName() + "\n");
-				writer.close ();
+				writer.close();
 			} catch (IOException error) {}
 			for (int i = 0, li = subject.getChapterCount(); i < li; ++i) {
 				Chapter chapter = subject.getChapter(i);
 				try {
-					BufferedWriter writer = new BufferedWriter(new FileWriter(home + File.separator + subjectDirectory + File.separator + chapter.getFilename()));
+					BufferedWriter writer = new BufferedWriter(new FileWriter(Loader.home + File.separator + subjectDirectory + File.separator + chapter.getFilename()));
 					writer.write(chapter.getName() + "\n");
 					Statistics statistics = chapter.getStatistics();
 					String[] strings = new String[]{
@@ -102,7 +102,7 @@ public class Loader {
 						Exercise exercise = chapter.getExercise(j);
 						writer.write(exercise.getQuestion() + "\n" + exercise.getAnswer() + "\n");
 					}
-					writer.close ();
+					writer.close();
 				} catch (IOException error) {}
 			}
 		}
