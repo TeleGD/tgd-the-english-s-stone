@@ -1,11 +1,13 @@
-package english;
+package theEnglishSStone;
 
-import app.AppLoader;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
+
+import app.AppFont;
+import app.AppLoader;
 
 public class HealthBar {
 
@@ -32,7 +34,7 @@ public class HealthBar {
 		this.height = height;
 		this.maxHP = maxHP;
 		this.flipped = flipped;
-		this.textFont = AppLoader.loadFont("/fonts/vt323.ttf", java.awt.Font.BOLD, (int) (24 * this.aspectRatio));
+		this.textFont = AppLoader.loadFont("/fonts/vt323.ttf", AppFont.BOLD, (int) (24 * this.aspectRatio));
 
 		this.textOffset = 40;
 		this.yText = y0 + height/2 - (int) (textFont.getHeight("HP") / this.aspectRatio)/2;

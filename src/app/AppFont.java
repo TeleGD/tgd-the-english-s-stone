@@ -7,6 +7,10 @@ import org.newdawn.slick.TrueTypeFont;
 
 public class AppFont extends TrueTypeFont {
 
+	public static final int PLAIN = Font.PLAIN;
+	public static final int BOLD = Font.BOLD;
+	public static final int ITALIC = Font.ITALIC;
+
 	private String filename;
 
 	public AppFont(String filename, InputStream stream, int type, int size) throws Exception {

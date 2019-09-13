@@ -1,4 +1,4 @@
-package english;
+package theEnglishSStone;
 
 public class Exercise  {
 

@@ -1,10 +1,16 @@
 package pages;
 
-import org.newdawn.slick.*;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
+import app.AppFont;
 import app.AppLoader;
 import app.AppPage;
 
@@ -53,7 +59,7 @@ public class Welcome extends AppPage {
 		this.setHint("PRESS [START]");
 		this.setLogo(AppLoader.loadPicture("/images/logo.png"));
 
-		this.titleFont = AppLoader.loadFont("/fonts/HennyPenny-Regular.ttf", java.awt.Font.BOLD, 40);
+		this.titleFont = AppLoader.loadFont("/fonts/henny-penny.ttf", AppFont.BOLD, 40);
 		this.titleColor = Color.white;
 		this.title = "The English's stone";
 	}

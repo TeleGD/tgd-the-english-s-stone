@@ -9,8 +9,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import english.Loader;
-import english.Subject;
+import theEnglishSStone.Loader;
+import theEnglishSStone.Subject;
 
 public final class Main {
 
@@ -20,7 +20,7 @@ public final class Main {
 		int height = 720;
 		boolean fullscreen = false;
 		String request = "Do you want to play in fullscreen?";
-		Object[] options = {
+		String[] options = {
 			"Yes",
 			"No"
 		};
@@ -46,7 +46,7 @@ public final class Main {
 
 				public void initStatesList(GameContainer container) {
 					this.addState(new pages.Welcome(0));
-					this.addState(new english.Duel(1));
+					this.addState(new theEnglishSStone.Duel(1));
 					this.addState(new pages.Choice(2, this, subjects));
 				}
 

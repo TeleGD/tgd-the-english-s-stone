@@ -1,4 +1,4 @@
-package english;
+package theEnglishSStone;
 
 import org.newdawn.slick.SpriteSheet;
 

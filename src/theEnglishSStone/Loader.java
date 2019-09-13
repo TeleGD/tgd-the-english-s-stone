@@ -1,4 +1,4 @@
-package english;
+package theEnglishSStone;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

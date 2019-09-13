@@ -1,4 +1,4 @@
-package english;
+package theEnglishSStone;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
@@ -6,6 +6,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
 
+import app.AppFont;
 import app.AppLoader;
 
 public class TextField {
@@ -39,7 +40,7 @@ public class TextField {
 		this.borderWidth = borderWidth;
 		this.padding = (this.height - this.borderWidth * 2) / 10;
 		this.line = (this.height - this.borderWidth * 2) - this.padding;
-		this.font = AppLoader.loadFont("/fonts/vt323.ttf", java.awt.Font.PLAIN, (int) (this.line * aspectRatio));
+		this.font = AppLoader.loadFont("/fonts/vt323.ttf", AppFont.PLAIN, (int) (this.line * aspectRatio));
 		this.backgroundColor = new Color(1f, 1f, 1f);
 		this.borderColor = new Color(.6f, .6f, .6f);
 		this.textColor = new Color(.2f, .2f, .2f);

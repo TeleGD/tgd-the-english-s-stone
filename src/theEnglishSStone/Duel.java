@@ -1,4 +1,4 @@
-package english;
+package theEnglishSStone;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import app.AppFont;
 import app.AppLoader;
 import org.newdawn.slick.tiled.TiledMap;
 
@@ -160,7 +161,7 @@ public class Duel extends BasicGameState {
 		this.characters[1].setExercise(this.chapter.getExercise(this.exercises[1]));
 
 		// Partie affichage chapitre et sujet :
-		Font font = AppLoader.loadFont("/fonts/press-start-2p.ttf", java.awt.Font.BOLD, (int) (40 * this.aspectRatio));
+		Font font = AppLoader.loadFont("/fonts/press-start-2p.ttf", AppFont.BOLD, (int) (40 * this.aspectRatio));
 		this.title = "Subject: " + this.subject.getName();
 		this.subTitle = "Chapter: " + this.chapter.getName();
 		this.titleFont = font;

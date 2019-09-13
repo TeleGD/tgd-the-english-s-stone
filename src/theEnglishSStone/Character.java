@@ -1,13 +1,19 @@
-package english;
+package theEnglishSStone;
 
-import app.AppLoader;
-import org.newdawn.slick.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
-import java.util.ArrayList;
-import java.util.List;
+import app.AppFont;
+import app.AppLoader;
 
 public abstract class Character extends Entity {
 
@@ -28,7 +34,7 @@ public abstract class Character extends Entity {
 	private TextField textField; //TODO : implémenter un TextField basique
 	private Duel duel;
 	private Exercise exercise;
-	private ArrayList<Entity> stars;
+	private List<Entity> stars;
 	private List<Spell> spells;
 	private HealthBar healthBar;
 	private float timeAnimRemainingMax;
@@ -68,7 +74,7 @@ public abstract class Character extends Entity {
 		this.yCorrectAnswer = 285;
 		this.state = 0;
 		this.timeAnimRemainingMax = 500;
-		this.textFont = AppLoader.loadFont("/fonts/vt323.ttf", java.awt.Font.BOLD, (int) (30 * aspectRatio));
+		this.textFont = AppLoader.loadFont("/fonts/vt323.ttf", AppFont.BOLD, (int) (30 * aspectRatio));
 		int sizeOfName = (int) (textFont.getWidth(name) / aspectRatio);
 		this.previousFailures = new ArrayList<Integer>();
 		this.currentFailure = 0;
