@@ -2,11 +2,6 @@ build:
 	mkdir -p bin
 	javac -d bin -cp src:res:lib/common/*:lib/x86/* src/Main.java
 
-install:
-	rm -r -f ~/.tgd/the-english-s-stone
-	mkdir -p ~/.tgd
-	cp -r res/data/theEnglishSStone ~/.tgd/the-english-s-stone
-
 run:
 	java -Djava.library.path=sys/x86 -cp bin:res:lib/common/*:lib/x86/* Main
 
@@ -48,6 +43,5 @@ clean:
 	rm -r -f bin/*
 	rm -r -f tmp/*
 	rm -r -f zip/*
-	rm -r -f ~/.tgd/the-english-s-stone
 
-.PHONY: build install run run-arm archive exec exec-arm clean
+.PHONY: build run run-arm archive exec exec-arm clean
