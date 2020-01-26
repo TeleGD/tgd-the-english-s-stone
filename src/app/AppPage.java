@@ -92,10 +92,12 @@ public abstract class AppPage extends BasicGameState {
 		this.ID = ID;
 	}
 
+	@Override
 	public int getID() {
 		return this.ID;
 	}
 
+	@Override
 	public void init(GameContainer container, StateBasedGame game) {
 		this.titleBoxWidth = this.contentWidth;
 		this.titleBoxHeight = AppPage.titleLineHeight;
@@ -125,12 +127,14 @@ public abstract class AppPage extends BasicGameState {
 		this.setHint("");
 	}
 
+	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 		if (this.hintBlink) {
 			this.hintBlinkCountdown = (this.hintBlinkCountdown + this.hintBlinkPeriod - delta) % this.hintBlinkPeriod;
 		}
 	}
 
+	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics context) {
 		this.renderBackground(container, game, context);
 		this.renderTitle(container, game, context);

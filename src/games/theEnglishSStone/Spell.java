@@ -1,4 +1,4 @@
-package theEnglishSStone;
+package games.theEnglishSStone;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -11,7 +11,7 @@ public class Spell extends Entity {
 	private int damage;
 
 	public Spell(float aspectRatio, int x, int y, boolean side, int star, int damage) {
-		super(aspectRatio, "/images/spell/spritesheetSpell.png",100,100,124,108,3, x, y, (side? -1 : 1)* 10, side );
+		super(aspectRatio, "/images/theEnglishSStone/spell/spritesheetSpell.png",100,100,124,108,3, x, y, (side? -1 : 1)* 10, side );
 		this.star = star;
 		this.damage = damage;
 	}

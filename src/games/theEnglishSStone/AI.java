@@ -1,6 +1,4 @@
-package theEnglishSStone;
-
-import java.util.Random;
+package games.theEnglishSStone;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
@@ -44,7 +42,7 @@ public class AI extends Character {
 	private int answerCountdown;
 
 	public AI(float aspectRatio, String name, int HPmax, Duel duel, boolean side, Statistics statistics) {
-		super(aspectRatio, "/images/characters/FierceWizard.png", name, HPmax, duel, side);
+		super(aspectRatio, "/images/theEnglishSStone/characters/FierceWizard.png", name, HPmax, duel, side);
 		this.statistics = statistics;
 		this.aspectRatio = aspectRatio;
 		this.countDownFont = AppLoader.loadFont("/fonts/vt323.ttf", AppFont.PLAIN, (int) (30 * aspectRatio));

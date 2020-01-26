@@ -1,4 +1,4 @@
-package theEnglishSStone;
+package games.theEnglishSStone;
 
 import java.util.List;
 

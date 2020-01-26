@@ -1,4 +1,4 @@
-package theEnglishSStone;
+package games.theEnglishSStone;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -191,7 +191,7 @@ public abstract class Character extends Entity {
 		for (int i = stars.size(); i < starMax; i++){ // On ne remplace que les star qu'il manque
 			int posX = getX() - 40 + 60 * i;
 			int posY = getY() - 40;
-			stars.add(new Star(this.aspectRatio, "/images/star.png",40,40, 512, 512, posX,posY,0));
+			stars.add(new Star(this.aspectRatio, "/images/theEnglishSStone/star.png",40,40, 512, 512, posX,posY,0));
 		}
 	}
 

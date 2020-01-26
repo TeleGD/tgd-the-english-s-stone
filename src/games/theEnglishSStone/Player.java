@@ -1,4 +1,4 @@
-package theEnglishSStone;
+package games.theEnglishSStone;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
@@ -19,7 +19,7 @@ public class Player extends Character {
 	private Duel duel;
 
 	public Player(float aspectRatio, String name, int HPmax, Duel duel, boolean side) {
-		super(aspectRatio, "/images/characters/YoungWizard.png", name, HPmax, duel, side);
+		super(aspectRatio, "/images/theEnglishSStone/characters/YoungWizard.png", name, HPmax, duel, side);
 		this.aspectRatio = aspectRatio;
 		this.countDownFont = AppLoader.loadFont("/fonts/vt323.ttf", AppFont.PLAIN, (int) (30 * aspectRatio));
 		this.countDownColor = Color.white;

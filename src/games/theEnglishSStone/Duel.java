@@ -1,16 +1,19 @@
-package theEnglishSStone;
+package games.theEnglishSStone;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.newdawn.slick.*;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import app.AppFont;
 import app.AppLoader;
-import org.newdawn.slick.tiled.TiledMap;
 
 public class Duel extends BasicGameState {
 
@@ -47,7 +50,7 @@ public class Duel extends BasicGameState {
 
 	public void init(GameContainer container, StateBasedGame game) {
 		/* Méthode exécutée une unique fois au chargement du programme */
-		this.background = AppLoader.loadPicture("/images/background.png");
+		this.background = AppLoader.loadPicture("/images/theEnglishSStone/background.png");
 	}
 
 	public void enter(GameContainer container, StateBasedGame game) {

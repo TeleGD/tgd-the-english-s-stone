@@ -50,7 +50,7 @@ public class Welcome extends AppPage {
 		this.logoBoxWidth = this.contentWidth;
 		this.logoBoxHeight = this.hintBoxY - this.logoBoxY - AppPage.gap;
 
-		this.logoVisibility = true;
+		this.logoVisibility = false;
 
 		this.titleVisibility = false;
 		this.subtitleVisibility = false;
@@ -59,7 +59,7 @@ public class Welcome extends AppPage {
 		this.setHint("PRESS [START]");
 		this.setLogo(AppLoader.loadPicture("/images/logo.png"));
 
-		this.titleFont = AppLoader.loadFont("/fonts/henny-penny.ttf", AppFont.BOLD, 40);
+		this.titleFont = AppLoader.loadFont("/fonts/theEnglishSStone/henny-penny.ttf", AppFont.BOLD, 40);
 		this.titleColor = Color.white;
 		this.title = "The English's stone";
 	}
@@ -76,7 +76,7 @@ public class Welcome extends AppPage {
 
 	public void render(GameContainer container, StateBasedGame game, Graphics context) {
 		super.render(container, game, context);
-		// this.renderLogo(container, game, context);
+		this.renderLogo(container, game, context);
 		context.setFont(this.titleFont);
 		context.setColor(this.titleColor);
 		context.drawString(this.title, this.logoBoxX + (this.logoBoxWidth - this.titleFont.getWidth(this.title)) / 2, this.logoBoxY);

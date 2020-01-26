@@ -1,4 +1,4 @@
-package theEnglishSStone;
+package games.theEnglishSStone;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;

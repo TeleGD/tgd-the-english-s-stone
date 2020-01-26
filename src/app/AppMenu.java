@@ -50,6 +50,7 @@ public abstract class AppMenu extends AppPage {
 		super(ID);
 	}
 
+	@Override
 	public void init(GameContainer container, StateBasedGame game) {
 		super.init(container, game);
 
@@ -69,10 +70,12 @@ public abstract class AppMenu extends AppPage {
 		this.setMenu(new ArrayList<MenuItem>());
 	}
 
+	@Override
 	public void enter(GameContainer container, StateBasedGame game) {
 		container.getInput().clearKeyPressedRecord();
 	}
 
+	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 		super.update(container, game, delta);
 		Input input = container.getInput();
@@ -121,6 +124,7 @@ public abstract class AppMenu extends AppPage {
 		}
 	}
 
+	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics context) {
 		super.render(container, game, context);
 		this.renderMenu(container, game, context);

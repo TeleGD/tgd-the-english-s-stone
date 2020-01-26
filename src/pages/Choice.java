@@ -11,8 +11,8 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 import app.AppMenu;
 import app.elements.MenuItem;
 
-import theEnglishSStone.Duel;
-import theEnglishSStone.Subject;
+import games.theEnglishSStone.Duel;
+import games.theEnglishSStone.Subject;
 
 public class Choice extends AppMenu {
 
@@ -30,7 +30,6 @@ public class Choice extends AppMenu {
 					super.init(container, game);
 					this.setTitle("The English's stone");
 					this.setSubtitle(subject.getName());
-					this.setHint("SELECT A CHAPTER");
 					List<MenuItem> menuItems = new ArrayList<MenuItem>();
 					for (int i = 0, li = subject.getChapterCount(); i < li; ++i) {
 						int j = i;
@@ -54,10 +53,7 @@ public class Choice extends AppMenu {
 						}
 					});
 					this.setMenu(menuItems);
-				}
-
-				public void update(GameContainer container, StateBasedGame game, int delta) {
-					super.update(container, game, delta);
+					this.setHint("SELECT A CHAPTER");
 				}
 
 			});

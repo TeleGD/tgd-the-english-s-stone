@@ -14,7 +14,7 @@ public class AppFont extends TrueTypeFont {
 	private String filename;
 
 	public AppFont(String filename, InputStream stream, int type, int size) throws Exception {
-		super(Font.createFont(java.awt.Font.TRUETYPE_FONT, stream).deriveFont(type, size), true);
+		super(Font.createFont(Font.TRUETYPE_FONT, stream).deriveFont(type, size), true);
 		this.setFilename(filename);
 	}
 
