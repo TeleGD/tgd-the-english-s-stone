@@ -1,2 +1,2 @@
 - David Forlen (@DavidForlen)
-- Tristan Le Godais (@TrisTOON)
+- Tristan Le Godais (@PolariTOON)
